@@ -8,7 +8,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:share_plate/main.dart';
 import 'package:share_plate/signup.dart';
 
 void main() {

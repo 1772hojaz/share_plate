@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart'; // Importing gestures.dart for TapGestureRecognizer
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -17,7 +19,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             // Handle back navigation
           },
@@ -29,7 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
+              const Center(
                 child: Text(
                   "Sign Up",
                   style: TextStyle(
@@ -38,15 +40,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               _buildTextField("Name", "ex: Jon Smith"),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               _buildTextField("Email", "ex: jon.smith@gmail.com"),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               _buildTextField("Location", "ex: Kigali, Kimironko"),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               _buildTextField("Password", "********", isPassword: true),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Checkbox(
@@ -60,11 +62,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   RichText(
                     text: TextSpan(
                       text: 'I understand the ',
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                       children: [
                         TextSpan(
                           text: 'terms & policy',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.green,
                             decoration: TextDecoration.underline,
                           ),
@@ -79,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
@@ -87,26 +89,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     print("Signing Up...");
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // Use backgroundColor instead of primary
-                    padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                    backgroundColor:
+                        Colors.green, // Use backgroundColor instead of primary
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 100, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     "SIGN UP",
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              Center(
+              const SizedBox(height: 20),
+              const Center(
                 child: Text(
                   "or sign up with",
                   style: TextStyle(color: Colors.black54),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -114,19 +118,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     // Handle Google sign-up logic
                     print("Signing up with Google...");
                   }),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   _buildSocialButton('assets/images/facebook.png', () {
                     // Handle Facebook sign-up logic
                     print("Signing up with Facebook...");
                   }),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   _buildSocialButton('assets/images/twitter.jpeg', () {
                     // Handle Twitter sign-up logic
                     print("Signing up with Twitter...");
                   }),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: GestureDetector(
                   onTap: () {
@@ -134,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     _navigateToSignIn();
                   },
                   child: RichText(
-                    text: TextSpan(
+                    text: const TextSpan(
                       text: 'Have an account? ',
                       style: TextStyle(color: Colors.black54),
                       children: [
@@ -170,15 +174,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         focusedBorder: InputBorder.none, // Remove focused border
         suffixIcon: isPassword
             ? IconButton(
-          icon: Icon(
-            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-          ),
-          onPressed: () {
-            setState(() {
-              _isPasswordVisible = !_isPasswordVisible;
-            });
-          },
-        )
+                icon: Icon(
+                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isPasswordVisible = !_isPasswordVisible;
+                  });
+                },
+              )
             : null,
       ),
     );
@@ -201,14 +205,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Terms and Policy"),
-          content: Text("Here you can display your terms and policy."),
+          title: const Text("Terms and Policy"),
+          content: const Text("Here you can display your terms and policy."),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Close"),
+              child: const Text("Close"),
             ),
           ],
         );
