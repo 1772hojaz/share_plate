@@ -36,7 +36,12 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double logoSize = screenWidth * 0.8; // Logo will take up 80% of screen width
+    double buttonWidth = screenWidth * 0.75; // Button will take up 75% of screen width
+
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -57,24 +62,35 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
                   );
                 },
                 child: Image.asset(
-                  'assets/shareplate_rwanda_logo.png', // Ensure this matches your asset name
-                  width: 200,
-                  height: 200,
+                  'assets/shareplate_rwanda_logo_transparent.png',
+                  width: logoSize,
+                  height: logoSize,
+                  fit: BoxFit.contain,
                 ),
               ),
               const SizedBox(height: 50),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              SizedBox(
+                width: buttonWidth,
+                height: 60,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF00B140), // Updated to the correct green color
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  onPressed: () {
+                    // Navigate to the next screen
+                    // We'll implement this later
+                    print('Get Started button pressed');
+                  },
+                  child: const Text(
+                    'Get Started!',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
-                onPressed: () {
-                  // Navigate to the next screen
-                  // You'll implement this later
-                  print('Get Started button pressed');
-                },
-                child: const Text('Get Started!'),
               ),
             ],
           ),

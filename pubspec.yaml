@@ -55,6 +55,10 @@ flutter:
   assets:
     - assets/shareplate_rwanda_logo.png
     - assets/shareplate_rwanda_logo.svg
+    - assets/shareplate_rwanda_logo_transparent.png
+    - assets/shareplate_rwanda_logo_high_quality.jpg
+    - assets/shareplate_rwanda_logo_500x500.jpg
+    - assets/shareplate_rwanda_logo_transparent.svg
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
