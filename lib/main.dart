@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:share_plate/UI/fogot_password.dart';
+import 'package:share_plate/UI/new_password.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ForgotPasswordScreen(),
+      home: const NewPasswordScreen(), 
     );
   }
 }
