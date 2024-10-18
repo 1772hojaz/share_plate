@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'donor_home_page.dart'; // Make sure to import your DonorHomePage
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -74,7 +75,7 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
                 height: 60,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00B140), // Updated to the correct green color
+                    backgroundColor: const Color(0xFF00B140),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
@@ -82,9 +83,10 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
                     ),
                   ),
                   onPressed: () {
-                    // Navigate to the next screen
-                    // We'll implement this later
-                    print('Get Started button pressed');
+                    // Navigate to the DonorHomePage
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => const DonorHomePage()),
+                    );
                   },
                   child: const Text(
                     'Get Started!',
