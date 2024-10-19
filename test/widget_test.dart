@@ -8,20 +8,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-<<<<<<< HEAD
-import 'package:share_plate/signup.dart';
-=======
 import 'package:donor_home/main.dart';
->>>>>>> 565aaa4 (home page's commit)
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-<<<<<<< HEAD
-    await tester.pumpWidget(SignUpScreen());
-=======
-    await tester.pumpWidget(SharePlateApp());
->>>>>>> 565aaa4 (home page's commit)
+    await tester.pumpWidget(const SharePlateApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

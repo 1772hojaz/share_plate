@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           'SharePlate Rwanda',
           style: TextStyle(
             color: Colors.black,
@@ -18,7 +20,7 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.account_circle, color: Colors.black),
+            icon: const Icon(Icons.account_circle, color: Colors.black),
             onPressed: () {
               // Handle profile button click
             },
@@ -41,8 +43,8 @@ class HomePage extends StatelessWidget {
             // Text under the banner with green background
             Container(
               color: Colors.green,
-              padding: EdgeInsets.symmetric(vertical: 12.0),
-              child: Text(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: const Text(
                 'The most trusted food sharing app!',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -54,7 +56,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Donation and Reception buttons layout
             Row(
@@ -64,7 +66,7 @@ class HomePage extends StatelessWidget {
                 buildFoodButton(
                   'Donate food',
                   'assets/images/donate_food.jpg',
-                      () {
+                  () {
                     // Handle Donate Food click
                   },
                 ),
@@ -72,14 +74,14 @@ class HomePage extends StatelessWidget {
                 buildFoodButton(
                   'Receive food',
                   'assets/images/receive_food.jpg',
-                      () {
+                  () {
                     // Handle Receive Food click
                   },
                 ),
               ],
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -88,12 +90,17 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.green,
         selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black, // Make the unselected item color the same as selected
-        showSelectedLabels: true, // Ensure labels are visible for selected items
-        showUnselectedLabels: true, // Ensure labels are visible for unselected items
-        selectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-        unselectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-        items: [
+        unselectedItemColor:
+            Colors.black, // Make the unselected item color the same as selected
+        showSelectedLabels:
+            true, // Ensure labels are visible for selected items
+        showUnselectedLabels:
+            true, // Ensure labels are visible for unselected items
+        selectedLabelStyle:
+            const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        unselectedLabelStyle:
+            const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -118,7 +125,7 @@ class HomePage extends StatelessWidget {
         onTap();
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 8.0),
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
         width: 127, // Decreased width of the button
         height: 214, // Decreased height of the button
         decoration: BoxDecoration(
@@ -131,11 +138,12 @@ class HomePage extends StatelessWidget {
             // Green Header for the Button Text
             Container(
               color: Colors.green,
-              padding: EdgeInsets.symmetric(vertical: 8), // Decreased vertical padding
+              padding: const EdgeInsets.symmetric(
+                  vertical: 8), // Decreased vertical padding
               child: Text(
                 label,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 8, // Decreased font size
                   color: Colors.white,
                   fontFamily: 'Poppins',
@@ -146,7 +154,8 @@ class HomePage extends StatelessWidget {
 
             // Image below the green text section
             Padding(
-              padding: EdgeInsets.all(8.0), // Add some padding for the image
+              padding:
+                  const EdgeInsets.all(8.0), // Add some padding for the image
               child: Image.asset(
                 imagePath,
                 height: 80, // Decreased height of the image inside the button
