@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # share_plate
+=======
+# donor_home
+>>>>>>> 565aaa4 (home page's commit)
 
 A new Flutter project.
 

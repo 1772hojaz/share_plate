@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
+<<<<<<< HEAD
         android:label="share_plate"
+=======
+        android:label="donor_home"
+>>>>>>> 565aaa4 (home page's commit)
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

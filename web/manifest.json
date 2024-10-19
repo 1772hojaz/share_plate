@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
     "name": "share_plate",
     "short_name": "share_plate",
+=======
+    "name": "donor_home",
+    "short_name": "donor_home",
+>>>>>>> 565aaa4 (home page's commit)
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

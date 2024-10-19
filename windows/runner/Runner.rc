@@ -90,12 +90,21 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
+<<<<<<< HEAD
             VALUE "FileDescription", "share_plate" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "share_plate" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "share_plate.exe" "\0"
             VALUE "ProductName", "share_plate" "\0"
+=======
+            VALUE "FileDescription", "donor_home" "\0"
+            VALUE "FileVersion", VERSION_AS_STRING "\0"
+            VALUE "InternalName", "donor_home" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
+            VALUE "OriginalFilename", "donor_home.exe" "\0"
+            VALUE "ProductName", "donor_home" "\0"
+>>>>>>> 565aaa4 (home page's commit)
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
