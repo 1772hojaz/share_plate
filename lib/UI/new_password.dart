@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // New Password Screen widget
 class NewPasswordScreen extends StatelessWidget {
- const NewPasswordScreen({Key? key}) : super(key: key); // Constructor
+ const NewPasswordScreen({super.key}); // Constructor
 
 
  @override

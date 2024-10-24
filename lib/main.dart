@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:share_plate/UI/food_listing.dart'; // Import the food listing page
-import 'package:share_plate/UI/new_password.dart'; // Import the new password page if needed
-
+import 'package:share_plate/UI/food_listing.dart';
+import 'package:share_plate/UI/transaction_completion.dart';
 void main() {
   runApp(const MyApp()); // Run the MyApp widget
 }
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false, // Hide the debug banner
-      home: FoodListingPage(), // Set the FoodListingPage as the home screen
+      home: TransactionCompletionPage(), // Set the FoodListingPage as the home screen
     );
   }
 }

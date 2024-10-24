@@ -6,7 +6,7 @@ class FoodListingPageController extends GetxController {
 }
 
 class FoodListingPage extends StatelessWidget {
-  FoodListingPage({Key? key}) : super(key: key);
+  FoodListingPage({super.key});
 
   final FoodListingPageController controller = Get.put(FoodListingPageController());
 
@@ -21,15 +21,15 @@ class FoodListingPage extends StatelessWidget {
           GestureDetector(
             onTap: () {
               // Navigate to user profile when clicked
-              Get.to(UserProfilePage()); // Use GetX for navigation
+              Get.to(const UserProfilePage()); // Use GetX for navigation
             },
             child: Container(
               margin: const EdgeInsets.only(right: 16, top: 16),
               width: 44,
               height: 44,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                image: const DecorationImage(
+                image: DecorationImage(
                   image: AssetImage('assets/shareplate-icon.jpeg'), // Replace with your image
                   fit: BoxFit.cover,
                 ),
@@ -68,7 +68,7 @@ class FoodListingPage extends StatelessWidget {
                           width: 385, //  width 385
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            image: DecorationImage(
+                            image: const DecorationImage(
                               image: AssetImage('assets/shareplateburger1.jpeg'), // Ensure proper image extension
                               fit: BoxFit.cover,
                             ),
@@ -98,9 +98,9 @@ class FoodListingPage extends StatelessWidget {
             height: 95,
             width: 403, // Bottom navigation bar width
             color: const Color(0xFF00B140),
-            child: Row(
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
+              children: [
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -133,6 +133,8 @@ class FoodListingPage extends StatelessWidget {
 
 // Example UserProfilePage (Replace this with your actual profile page)
 class UserProfilePage extends StatelessWidget {
+  const UserProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,11 +146,4 @@ class UserProfilePage extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: FoodListingPage(), // Entry point to the FoodListingPage
-  ));
 }
