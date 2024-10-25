@@ -16,6 +16,9 @@ dependencies:
   # Adding GetX for state management
   get: ^4.6.5
 
+  flutter_chat_ui: ^1.6.15
+  line_icons: ^2.0.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -28,3 +31,4 @@ flutter:
     - assets/shareplate-icon.jpeg
     - assets/shareplateburger1.jpeg
     - assets/getameal.jpeg
+    - assets/avatar8.png

@@ -8,7 +8,8 @@ class FoodListingPageController extends GetxController {
 class FoodListingPage extends StatelessWidget {
   FoodListingPage({Key? key}) : super(key: key);
 
-  final FoodListingPageController controller = Get.put(FoodListingPageController());
+  final FoodListingPageController controller =
+      Get.put(FoodListingPageController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,8 @@ class FoodListingPage extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: const DecorationImage(
-                  image: AssetImage('assets/shareplate-icon.jpeg'), // Replace with your image
+                  image: AssetImage(
+                      'assets/shareplate-icon.jpeg'), // Replace with your image
                   fit: BoxFit.cover,
                 ),
               ),
@@ -48,7 +50,8 @@ class FoodListingPage extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16), // Corner radius of 16
               image: const DecorationImage(
-                image: AssetImage('assets/getameal.jpeg'), // Replace with your image
+                image: AssetImage(
+                    'assets/getameal.jpeg'), // Replace with your image
                 fit: BoxFit.cover, // Ensures the image fills the container
               ),
             ),
@@ -56,7 +59,8 @@ class FoodListingPage extends StatelessWidget {
           Expanded(
             child: Obx(() {
               return ListView.builder(
-                itemCount: controller.foodList.length, // Dynamically using GetX state
+                itemCount:
+                    controller.foodList.length, // Dynamically using GetX state
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -69,7 +73,8 @@ class FoodListingPage extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
-                              image: AssetImage('assets/shareplateburger1.jpeg'), // Ensure proper image extension
+                              image: AssetImage(
+                                  'assets/shareplateburger1.jpeg'), // Ensure proper image extension
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -81,7 +86,8 @@ class FoodListingPage extends StatelessWidget {
                           child: Text(
                             "Donated by ${controller.foodList[index]}", // Using dynamic data
                             style: TextStyle(
-                              color: Colors.black.withOpacity(0.7), // Semi-transparent black
+                              color: Colors.black
+                                  .withOpacity(0.7), // Semi-transparent black
                               fontSize: 12, // Small font size
                             ),
                           ),
@@ -111,7 +117,8 @@ class FoodListingPage extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.volunteer_activism, color: Colors.black), // Appropriate donate icon
+                    Icon(Icons.volunteer_activism,
+                        color: Colors.black), // Appropriate donate icon
                     Text('Donate', style: TextStyle(color: Colors.black)),
                   ],
                 ),
@@ -144,11 +151,4 @@ class UserProfilePage extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: FoodListingPage(), // Entry point to the FoodListingPage
-  ));
 }
