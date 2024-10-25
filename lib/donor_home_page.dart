@@ -1,65 +1,130 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'user_profile_page.dart';
 
-class DonorHomePage extends StatelessWidget {
-  const DonorHomePage({Key? key}) : super(key: key);
+class DonorHomeController extends GetxController {
+  // This would be populated with actual user data in a real app
+  var userName = 'Sarah'.obs;  // Example name
+  var profileImagePath = ''.obs;
+}
+
+class DonorHomePage extends GetView<DonorHomeController> {
+  const DonorHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Get the screen size
+    Get.put(DonorHomeController());
     final Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.white, // Set the background color to white
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const Text('9:41', style: TextStyle(fontSize: 16)),
-                  CircleAvatar(radius: 16, backgroundColor: Colors.grey[300]),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const UserProfilePage(),
+                          ),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(30),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                            width: 1,
+                          ),
+                        ),
+                        child: const CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.grey,
+                          backgroundImage: AssetImage('assets/default_profile.jpg'),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-            // Main content
+            // Main content with adjusted spacing
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Welcome back [User Name]! Ready to share surplus food?',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    const SizedBox(height: 20),
+                    Obx(() => Text(
+                      'Welcome back ${controller.userName.value}! Ready to share surplus food?',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                       textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 24),
+                    )),
+                    const SizedBox(height: 16), // Reduced space
                     Image.asset(
                       'assets/sharing_is_caring_logo.png',
-                      width: screenSize.width * 0.8, // Set width to 80% of screen width
+                      width: screenSize.width * 0.8,
                       fit: BoxFit.contain,
                     ),
-                    const SizedBox(height: 24),
-                    const Text('Create Food Listing', style: TextStyle(fontSize: 18)),
+                    const SizedBox(height: 16), // Reduced space
+                    const Text('Create Food Listing',
+                        style: TextStyle(fontSize: 18)),
                     const SizedBox(height: 8),
-                    Container(
-                      height: 120,
-                      color: Colors.grey[200],
-                      child: const Center(child: Icon(Icons.add, size: 48)),
+                    // Centered container with reduced width
+                    Center(
+                      child: SizedBox(
+                        width: screenSize.width * 0.6, // 60% of screen width
+                        child: Container(
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Center(child: Icon(Icons.add, size: 48)),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Implement create food listing functionality
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        minimumSize: const Size(double.infinity, 48),
+                    // Centered button with reduced width and more rounded corners
+                    Center(
+                      child: SizedBox(
+                        width: screenSize.width * 0.6, // 60% of screen width
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // TODO: Implement create food listing functionality
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white, // Ensures text is white
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30), // More rounded corners
+                            ),
+                          ),
+                          child: const Text(
+                            'Create',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ),
-                      child: const Text('Create'),
                     ),
                   ],
                 ),

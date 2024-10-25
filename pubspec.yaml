@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  get: ^4.6.5
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -60,6 +61,7 @@ flutter:
     - assets/shareplate_rwanda_logo_500x500.jpg
     - assets/shareplate_rwanda_logo_transparent.svg
     - assets/sharing_is_caring_logo.png
+    - assets/default_profile.jpg
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
