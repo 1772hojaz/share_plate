@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart'; // Import the HomePage
+import 'search_screen.dart'; // Import the SearchScreen
 
 void main() {
   runApp(const SharePlateApp());

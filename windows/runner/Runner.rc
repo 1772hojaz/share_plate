@@ -27,19 +27,19 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 1 TEXTINCLUDE
 BEGIN
-    "resource.h\0"
+"resource.h\0"
 END
 
 2 TEXTINCLUDE
 BEGIN
-    "#include ""winres.h""\r\n"
-    "\0"
+"#include ""winres.h""\r\n"
+"\0"
 END
 
 3 TEXTINCLUDE
 BEGIN
-    "\r\n"
-    "\0"
+"\r\n"
+"\0"
 END
 
 #endif    // APSTUDIO_INVOKED
@@ -73,58 +73,45 @@ IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION VERSION_AS_NUMBER
- PRODUCTVERSION VERSION_AS_NUMBER
- FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+FILEVERSION VERSION_AS_NUMBER
+PRODUCTVERSION VERSION_AS_NUMBER
+FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
 #ifdef _DEBUG
- FILEFLAGS VS_FF_DEBUG
+FILEFLAGS VS_FF_DEBUG
 #else
- FILEFLAGS 0x0L
+FILEFLAGS 0x0L
 #endif
- FILEOS VOS__WINDOWS32
- FILETYPE VFT_APP
- FILESUBTYPE 0x0L
+FILEOS VOS__WINDOWS32
+FILETYPE VFT_APP
+FILESUBTYPE 0x0L
 BEGIN
-    BLOCK "StringFileInfo"
-    BEGIN
-        BLOCK "040904e4"
-        BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-<<<<<<< HEAD
-            VALUE "FileDescription", "share_plate" "\0"
-            VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "share_plate" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "share_plate.exe" "\0"
-            VALUE "ProductName", "share_plate" "\0"
-=======
-            VALUE "FileDescription", "donor_home" "\0"
-            VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "donor_home" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "donor_home.exe" "\0"
-            VALUE "ProductName", "donor_home" "\0"
->>>>>>> 565aaa4 (home page's commit)
-            VALUE "ProductVersion", VERSION_AS_STRING "\0"
-        END
-    END
-    BLOCK "VarFileInfo"
-    BEGIN
-        VALUE "Translation", 0x409, 1252
-    END
+BLOCK "StringFileInfo"
+BEGIN
+BLOCK "040904e4"
+BEGIN
+VALUE "CompanyName", "com.example" "\0"
+VALUE "FileDescription", "share_plate" "\0" // Choose the correct description
+VALUE "FileVersion", VERSION_AS_STRING "\0"
+VALUE "InternalName", "share_plate" "\0" // Choose the correct internal name
+VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
+VALUE "OriginalFilename", "share_plate.exe" "\0" // Choose the correct original filename
+VALUE "ProductName", "share_plate" "\0" // Choose the correct product name
+VALUE "ProductVersion", VERSION_AS_STRING "\0"
+END
+END
+BLOCK "VarFileInfo"
+BEGIN
+VALUE "Translation", 0x409, 1252
+END
 END
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
-
-
 
 #ifndef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
-
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
