@@ -42,17 +42,17 @@ Key Features
 Widget and state management use
 
 
->> To get a responsive and dynamic front end experience, we’ve used a number of Flutter widgets and state management techniques.
+-- To get a responsive and dynamic front end experience, we’ve used a number of Flutter widgets and state management techniques.
 
 
 Widget Usage
 
 
-> Extensive and Creative Use of Widgets: It uses a nice mix of widgets when it comes to layouts, inputs and interactions, and I really like their reference to the Flutter’s widget library.
+-- Extensive and Creative Use of Widgets: It uses a nice mix of widgets when it comes to layouts, inputs and interactions, and I really like their reference to the Flutter’s widget library.
 
-> Stateful Widgets and setState: SETSTATE is used for the management of dynamic changes of Interactive elements such as forms, buttons & toggle switches.
+-- Stateful Widgets and setState: SETSTATE is used for the management of dynamic changes of Interactive elements such as forms, buttons & toggle switches.
 
-A> nimations and Transitions: Visual appeal is augmented via subtle animations which improve user flow and add feedback, without undermining functionality.
+-- Animations and Transitions: Visual appeal is augmented via subtle animations which improve user flow and add feedback, without undermining functionality.
 
 
 State Management
