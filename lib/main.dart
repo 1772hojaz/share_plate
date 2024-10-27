@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'UI/food_listing.dart';
 import 'splash_screen.dart';
 
 void main() {
@@ -11,10 +12,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return GetMaterialApp(
+      title: "Share Plate",
+      initialRoute: "/",
+      getPages: [
+        GetPage(name: "/", page: () => SplashScreen()),
+        GetPage(name: "/home", page: () => FoodListingPage())
+      ],
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
     );
   }
-
-
+}
