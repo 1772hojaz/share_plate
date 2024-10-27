@@ -1,11 +1,11 @@
 SHAREPLATE RWANDA
 
-Overview
+OVERVIEW
 
 The mobile app SharePlate Rwanda aims to tackle food insecurity and food waste in Rwanda. This app brings people together who have surplus food, restaurants and grocery stores with those who need food. SharePlate Rwanda is built using Flutter and aims to focus on a smooth, exciting and inclusive user experience with features that help users easily share and request, and in turn manage food resources; all safely.
 
 
-Project Goals
+PROJECT GOALS
 
 
 Our project aims to create a user-friendly and efficient platform that:
@@ -17,7 +17,7 @@ Our project aims to create a user-friendly and efficient platform that:
 -- Accessible design and community based approach encourages sustainability.
 
 
-Front-End Design Principles
+FRONT-END DESIGN PINCIPLES
 
 
 -- Responsive Design: It’s optimized for portrait and landscape orientations, so your experience is going to be the same no matter what device you use.
@@ -25,7 +25,7 @@ Front-End Design Principles
 -- Material Design Standards: This gives us a nice and intuitive UI, which is aligned with Material Design principles, by having a layout, colors, typography and animation that sticks to Google’s Material Design.
 
 
-Key Features
+KEY FEATURES
 
 
 -- User Authentication: Tailored secure sign-up and login processes for individuals, restaurants and grocery stores.
@@ -39,14 +39,13 @@ Key Features
 -- Impact Tracking: Users can know how they can contribute and how they are helping to reduce the amount of food waste.
 
 
-Widget and state management use
+WIDGETt AND STATE MANAGEMENT USE
 
 
 -- To get a responsive and dynamic front end experience, we’ve used a number of Flutter widgets and state management techniques.
 
 
-Widget Usage
-
+WIDGET USAGE
 
 -- Extensive and Creative Use of Widgets: It uses a nice mix of widgets when it comes to layouts, inputs and interactions, and I really like their reference to the Flutter’s widget library.
 
@@ -55,7 +54,7 @@ Widget Usage
 -- Animations and Transitions: Visual appeal is augmented via subtle animations which improve user flow and add feedback, without undermining functionality.
 
 
-State Management
+STATE MANAGEMENT
 
 
 -- Efficient State Management: As we wanted to keep responsiveness and scalability, we’ve integrated state management solutions that works well for each feature. For instance:
@@ -63,8 +62,7 @@ State Management
 -- Provider or BLoC Pattern (future implementations): They will be employed to accelerate the bandwidth of state and streamline the data flow specifically for user sessions, notifications, and food sharing activities.
 
 
-Code Quality
-
+CODE QUALITY
 
 Our code follows clean, organized, and readable standards, reflecting best practices and ensuring maintainability:
 
@@ -78,8 +76,7 @@ Our code follows clean, organized, and readable standards, reflecting best pract
 
 -- Error Handling and Edge Cases: Potential errors and edge cases (blank forms, incorrect data entry) are handled with care, resulting in a pleasant user experience.
 
-
-Installation and Setup
+INSTALLATION AND SETUP
 
 1. Clone the repository:
    
@@ -91,7 +88,7 @@ Installation and Setup
    flutter run
 
 
-Future Enhancements
+FUTURE ENHANCEMENT
 
 
 We aim to continue developing and optimizing SharePlate Rwanda to meet evolving user needs:
@@ -105,7 +102,7 @@ We aim to continue developing and optimizing SharePlate Rwanda to meet evolving 
 -- Advanced Security Features: It further builds data privacy and user authentication.
 
 
-Contributors:
+CONTRIBUTORS:
 
 1. Audry Ashleen
 2. Bavukile Vilane
