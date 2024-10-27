@@ -10,71 +10,73 @@ Project Goals
 
 Our project aims to create a user-friendly and efficient platform that:
 
-Connects food donors with recipients in need, to promote Food Security.
+-- Connects food donors with recipients in need, to promote Food Security.
 
-Redistribution of surplus food within a community, to reduce Food Waste.
+-- Redistribution of surplus food within a community, to reduce Food Waste.
 
-Accessible design and community based approach encourages sustainability.
+-- Accessible design and community based approach encourages sustainability.
 
 
 Front-End Design Principles
 
 
-Responsive Design: It’s optimized for portrait and landscape orientations, so your experience is going to be the same no matter what device you use.
+-- Responsive Design: It’s optimized for portrait and landscape orientations, so your experience is going to be the same no matter what device you use.
 
-Material Design Standards: This gives us a nice and intuitive UI, which is aligned with Material Design principles, by having a layout, colors, typography and animation that sticks to Google’s Material Design.
+-- Material Design Standards: This gives us a nice and intuitive UI, which is aligned with Material Design principles, by having a layout, colors, typography and animation that sticks to Google’s Material Design.
 
 
 Key Features
 
 
-User Authentication: Tailored secure sign-up and login processes for individuals, restaurants and grocery stores.
+-- User Authentication: Tailored secure sign-up and login processes for individuals, restaurants and grocery stores.
 
-Food Sharing Platform: Donating and requesting food is simple.
+-- Food Sharing Platform: Donating and requesting food is simple.
 
-Location-Based Matching: It simplifies the food distribution logistics and connects users based on proximity.
+-- Location-Based Matching: It simplifies the food distribution logistics and connects users based on proximity.
 
-Real-Time Notifications: Alerts on food availability as well as pick update.
+-- Real-Time Notifications: Alerts on food availability as well as pick update.
 
-Impact Tracking: Users can know how they can contribute and how they are helping to reduce the amount of food waste.
+-- Impact Tracking: Users can know how they can contribute and how they are helping to reduce the amount of food waste.
 
 
 Widget and state management use
 
 
-To get a responsive and dynamic front end experience, we’ve used a number of Flutter widgets and state management techniques.
+>> To get a responsive and dynamic front end experience, we’ve used a number of Flutter widgets and state management techniques.
+
 
 Widget Usage
 
 
-Extensive and Creative Use of Widgets: It uses a nice mix of widgets when it comes to layouts, inputs and interactions, and I really like their reference to the Flutter’s widget library.
+> Extensive and Creative Use of Widgets: It uses a nice mix of widgets when it comes to layouts, inputs and interactions, and I really like their reference to the Flutter’s widget library.
 
-Stateful Widgets and setState: SETSTATE is used for the management of dynamic changes of Interactive elements such as forms, buttons & toggle switches.
+> Stateful Widgets and setState: SETSTATE is used for the management of dynamic changes of Interactive elements such as forms, buttons & toggle switches.
 
-Animations and Transitions: Visual appeal is augmented via subtle animations which improve user flow and add feedback, without undermining functionality.
+A> nimations and Transitions: Visual appeal is augmented via subtle animations which improve user flow and add feedback, without undermining functionality.
 
 
 State Management
 
 
-Efficient State Management: As we wanted to keep responsiveness and scalability, we’ve integrated state management solutions that works well for each feature. For instance:
+-- Efficient State Management: As we wanted to keep responsiveness and scalability, we’ve integrated state management solutions that works well for each feature. For instance:
 
-Provider or BLoC Pattern (future implementations): They will be employed to accelerate the bandwidth of state and streamline the data flow specifically for user sessions, notifications, and food sharing activities.
+-- Provider or BLoC Pattern (future implementations): They will be employed to accelerate the bandwidth of state and streamline the data flow specifically for user sessions, notifications, and food sharing activities.
 
 
 Code Quality
 
+
 Our code follows clean, organized, and readable standards, reflecting best practices and ensuring maintainability:
 
-Meaningful Naming Conventions: Variables, functions, and classes names are all descriptive and allows codebse to be easily navigated.
+-- Meaningful Naming Conventions: Variables, functions, and classes names are all descriptive and allows codebse to be easily navigated.
 
-Consistent Formatting: Code has consistent indentation, line breaks, spacing, etc.
+-- Consistent Formatting: Code has consistent indentation, line breaks, spacing, etc.
 
-Modular Structure: It is divided into reusable functions and widgets, as such, in a modular design approach.
+-- Modular Structure: It is divided into reusable functions and widgets, as such, in a modular design approach.
 
-Comprehensive Comments: Comments around each function and core component explain its usage, design choices, logic etc.
+-- Comprehensive Comments: Comments around each function and core component explain its usage, design choices, logic etc.
 
-Error Handling and Edge Cases: Potential errors and edge cases (blank forms, incorrect data entry) are handled with care, resulting in a pleasant user experience.
+-- Error Handling and Edge Cases: Potential errors and edge cases (blank forms, incorrect data entry) are handled with care, resulting in a pleasant user experience.
 
 
 Installation and Setup
@@ -94,13 +96,13 @@ Future Enhancements
 
 We aim to continue developing and optimizing SharePlate Rwanda to meet evolving user needs:
 
-Backend Integration: Building a robust backend to store and retrieve real time data.
+-- Backend Integration: Building a robust backend to store and retrieve real time data.
 
-Enhanced State Management: Better state management integration with advanced state management (Provider/BLoC) for better scalability.
+-- Enhanced State Management: Better state management integration with advanced state management (Provider/BLoC) for better scalability.
 
-User Metrics Dashboard: To allow users to see detailed insights on food sharing and personal impact.
+-- User Metrics Dashboard: To allow users to see detailed insights on food sharing and personal impact.
 
-Advanced Security Features: It further builds data privacy and user authentication.
+-- Advanced Security Features: It further builds data privacy and user authentication.
 
 
 Contributors:
