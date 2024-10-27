@@ -80,9 +80,11 @@ INSTALLATION AND SETUP
 
 1. Clone the repository:
    
+   git@github.com:1772hojaz/share_plate.git
+   
 3. Navigate to the project directory:
    
-   cd RepoName
+   cd share_plate
    
 5. Install dependencies:
    
@@ -91,6 +93,7 @@ INSTALLATION AND SETUP
 7. Run the app:
    
    flutter run
+
 
 
 FUTURE ENHANCEMENT
