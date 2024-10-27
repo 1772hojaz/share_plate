@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'UI/food_listing.dart';
 import 'splash_screen.dart';
 import 'donor_home_page.dart';
 
@@ -11,13 +13,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+
+    return GetMaterialApp(
+      title: "Share Plate",
+      initialRoute: "/",
+      getPages: [
+        GetPage(name: "/", page: () => SplashScreen()),
+        GetPage(name: "/home", page: () => FoodListingPage())
+      ],
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const SplashScreen(),
-        '/donor_home': (context) => DonorHomePage(),  // Add this route
-      },
     );
   }
 }
+

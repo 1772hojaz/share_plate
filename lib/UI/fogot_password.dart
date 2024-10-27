@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  const ForgotPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +21,12 @@ class ForgotPasswordScreen extends StatelessWidget {
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 20,
+                horizontal: 60,
               ),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: const Text(
-                  "Forgot Password?",
+                  "Forgot Password",
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w700,
@@ -34,13 +34,14 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 20),
             const Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 20,
                 vertical: 10,
               ),
               child: Text(
-                "Don't worry! It occurs. Please enter the email address linked with your account.",
+                "Enter your registered email or phone number to receive a reset link.",
                 style: TextStyle(
                   color: Color(0xFF8391A1),
                   fontSize: 16,
@@ -48,7 +49,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
             //email
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -70,7 +71,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   child: TextFormField(
                     decoration: const InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Enter your email',
+                      hintText: 'Enter your email, ex: jon.smith@email.com',
                       hintStyle: TextStyle(
                         color: Color(0xFF8391A1),
                       ),
@@ -79,7 +80,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 40),
+
+            const SizedBox(height: 80),
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
@@ -102,7 +104,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       child: const Padding(
                         padding: EdgeInsets.all(15.0),
                         child: Text(
-                          "Send Code",
+                          "Send Reset Link",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,

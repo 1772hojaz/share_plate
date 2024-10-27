@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'donor_home_page.dart'; // Make sure to import your DonorHomePage
+import 'package:get/get.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -8,7 +11,8 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => SplashScreenState();
 }
 
-class SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _rotationAnimation;
   late Animation<double> _scaleAnimation;
@@ -22,11 +26,11 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
       vsync: this,
     )..repeat(reverse: true);
 
-    _rotationAnimation = Tween<double>(begin: 0, end: 0.05).animate(_controller);
+    _rotationAnimation =
+        Tween<double>(begin: 0, end: 0.05).animate(_controller);
     _scaleAnimation = Tween<double>(begin: 1, end: 1.1).animate(_controller);
     _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: _controller, curve: const Interval(0, 0.5))
-    );
+        CurvedAnimation(parent: _controller, curve: const Interval(0, 0.5)));
   }
 
   @override
@@ -38,8 +42,10 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double logoSize = screenWidth * 0.8; // Logo will take up 80% of screen width
-    double buttonWidth = screenWidth * 0.75; // Button will take up 75% of screen width
+    double logoSize =
+        screenWidth * 0.8; // Logo will take up 80% of screen width
+    double buttonWidth =
+        screenWidth * 0.75; // Button will take up 75% of screen width
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -75,7 +81,10 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
                 height: 60,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00B140),
+
+                    backgroundColor: const Color(
+                        0xFF00B140), // Updated to the correct green color
+
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
@@ -83,10 +92,9 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
                     ),
                   ),
                   onPressed: () {
-                    // Navigate to the DonorHomePage
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const DonorHomePage()),
-                    );
+
+                    Get.toNamed('/signup');
+
                   },
                   child: const Text(
                     'Get Started!',
