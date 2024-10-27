@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:share_plate/UI/chat_home.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -71,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
         backgroundColor: Colors.white,
         leading: GestureDetector(
           onTap: () {
-            Navigator.pop(context);
+            Get.to(HomeScreen());
           },
           child: Icon(Icons.arrow_back, color: Colors.black),
         ),
