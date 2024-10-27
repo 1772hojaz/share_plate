@@ -81,10 +81,15 @@ INSTALLATION AND SETUP
 1. Clone the repository:
    
 3. Navigate to the project directory:
+   
    cd RepoName
-4. Install dependencies:
+   
+5. Install dependencies:
+   
    flutter pub get
-5. Run the app:
+   
+7. Run the app:
+   
    flutter run
 
 
