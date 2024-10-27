@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'splash_screen.dart';
 
 void main() {
@@ -15,6 +16,5 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
     );
   }
-}
 
-//changed the branch name
+
