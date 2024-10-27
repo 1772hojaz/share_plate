@@ -10,6 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  get: ^4.6.5
+
   google_fonts: ^4.0.4
 
 
@@ -35,10 +38,15 @@ flutter:
     - assets/shareplate_rwanda_logo_high_quality.jpg
     - assets/shareplate_rwanda_logo_500x500.jpg
     - assets/shareplate_rwanda_logo_transparent.svg
+
+    - assets/sharing_is_caring_logo.png
+    - assets/default_profile.jpg
+
     - assets/shareplate-icon.jpeg
     - assets/shareplateburger1.jpeg
     - assets/getameal.jpeg
     - assets/avatar8.png
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

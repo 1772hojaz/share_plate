@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
+import 'donor_home_page.dart'; // Make sure to import your DonorHomePage
 import 'package:get/get.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -78,8 +81,10 @@ class SplashScreenState extends State<SplashScreen>
                 height: 60,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
+
                     backgroundColor: const Color(
                         0xFF00B140), // Updated to the correct green color
+
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
@@ -87,7 +92,9 @@ class SplashScreenState extends State<SplashScreen>
                     ),
                   ),
                   onPressed: () {
+
                     Get.toNamed('/signup');
+
                   },
                   child: const Text(
                     'Get Started!',
