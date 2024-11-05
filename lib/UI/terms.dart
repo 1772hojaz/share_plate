@@ -18,6 +18,8 @@ class Terms extends StatelessWidget {
 }
 
 class TermsPage extends StatelessWidget {
+  const TermsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +50,7 @@ class TermsPage extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Clause 1
             _buildClause(
@@ -57,7 +59,7 @@ class TermsPage extends StatelessWidget {
               'prepared and stored following local health regulations. Users must ensure '
               'that food is properly labeled with any allergens and is within its expiration date.',
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Clause 2
             _buildClause(
@@ -67,7 +69,7 @@ class TermsPage extends StatelessWidget {
               'Any issues or concerns should be reported to the app support team promptly.',
             ),
 
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
 
             // Buttons - one below the other
             Column(
@@ -76,7 +78,7 @@ class TermsPage extends StatelessWidget {
                 _buildButton('Agree & Continue', Colors.green, Colors.white, () {
                   // Handle agree button press
                 }),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 _buildButton('Disagree', Colors.red, Colors.white, () {
                   // Handle disagree button press
                 }),
@@ -95,7 +97,7 @@ class TermsPage extends StatelessWidget {
         // Green background for the clause title
         Container(
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.green,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(0),
@@ -117,7 +119,7 @@ class TermsPage extends StatelessWidget {
         // White background for the clause content (no border)
         Container(
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(10),

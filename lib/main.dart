@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 // import 'package:share_plate/UI/fogot_password.dart';
 // import 'package:share_plate/UI/signin_page.dart';
-import 'package:share_plate/UI/terms.dart';
+// import 'package:share_plate/UI/terms.dart';
+import 'package:share_plate/UI/feedback_page.dart';
 
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Terms(),
+      home: FeedbackApp(),
     );
   }
 }
