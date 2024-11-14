@@ -16,11 +16,11 @@ dependencies:
   google_fonts: ^4.0.4
 
 
+
   cupertino_icons: ^1.0.8
 
 
   # Adding GetX for state management
-  get: ^4.6.5
 
   flutter_chat_ui: ^1.6.15
   line_icons: ^2.0.3
@@ -47,16 +47,16 @@ flutter:
     - assets/shareplateburger1.jpeg
     - assets/getameal.jpeg
     - assets/avatar8.png
+    - assets/images/facebook.png
+    - assets/images/Google_Icons-09-512.webp
+    - assets/images/images.png
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-  assets:
-    - assets/images/facebook.png
-    - assets/images/Google_Icons-09-512.webp
-    - assets/images/images.png
-
+ 
 
   # To add assets to your application, add an assets section, like this:
   # assets:
