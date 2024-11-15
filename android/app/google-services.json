@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "253761949733",
+    "project_id": "shareplate-4c505",
+    "storage_bucket": "shareplate-4c505.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253761949733:android:5b5f15eae96f47a6052fcc",
+        "android_client_info": {
+          "package_name": "com.example.share_plate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253761949733-66e9p7iav4esrj7ff20p0ian9nmfq97k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shareplate",
+            "certificate_hash": "2c1278bdc83f37e2b36c62d8cd8540183981c820"
+          }
+        },
+        {
+          "client_id": "253761949733-m9leudfpf6h9e9dapon99ng7fk37iljf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh0vBcb3omfT-HUOuPbSCzlxuE7ZisxsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253761949733-m9leudfpf6h9e9dapon99ng7fk37iljf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "253761949733-mal5kiup9287jvmhnhfu714ifu1frt3h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sharePlate"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253761949733:android:0ae996748ba7f828052fcc",
+        "android_client_info": {
+          "package_name": "com.yourname.shareplate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253761949733-qb7skcobnu4ip2kntn1ne9u74ku4ofo4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yourname.shareplate",
+            "certificate_hash": "2c1278bdc83f37e2b36c62d8cd8540183981c820"
+          }
+        },
+        {
+          "client_id": "253761949733-m9leudfpf6h9e9dapon99ng7fk37iljf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh0vBcb3omfT-HUOuPbSCzlxuE7ZisxsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253761949733-m9leudfpf6h9e9dapon99ng7fk37iljf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "253761949733-mal5kiup9287jvmhnhfu714ifu1frt3h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sharePlate"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
