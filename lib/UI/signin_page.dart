@@ -1,24 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
-  runApp(const SignInPage());
-}
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        textTheme: GoogleFonts.poppinsTextTheme(),
-      ),
-      home: const SignInScreen(),
-    );
-  }
-}
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -40,11 +24,13 @@ class SignInScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.black, size: 28),
+                    icon: const Icon(Icons.arrow_back,
+                        color: Colors.black, size: 28),
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: const Icon(Icons.share, color: Colors.black, size: 28),
+                    icon:
+                        const Icon(Icons.share, color: Colors.black, size: 28),
                     onPressed: () {},
                   ),
                 ],
@@ -73,7 +59,8 @@ class SignInScreen extends StatelessWidget {
                   ),
                   filled: true,
                   fillColor: const Color(0xFFF7F8F9),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
@@ -91,7 +78,8 @@ class SignInScreen extends StatelessWidget {
                   ),
                   filled: true,
                   fillColor: const Color(0xFFF7F8F9),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 ),
               ),
               const SizedBox(height: 8),
@@ -103,7 +91,8 @@ class SignInScreen extends StatelessWidget {
                   onPressed: () {},
                   child: const Text(
                     'Forgot Password?',
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w200),
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.w200),
                   ),
                 ),
               ),
@@ -140,32 +129,32 @@ class SignInScreen extends StatelessWidget {
 
               // Social Login Buttons (Google, Facebook, Twitter)
               Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    IconButton(
-      icon: Image.asset(
-        'assets/images/Google_Icons-09-512.webp',
-        width: 40,
-      ),
-      onPressed: () {},
-    ),
-    IconButton(
-      icon: Image.asset(
-        'assets/images/facebook.png',
-        width: 40,
-      ),
-      onPressed: () {},
-    ),
-    IconButton(
-      icon: Image.asset(
-        'assets/images/images.png',
-        width: 40,
-      ),
-      onPressed: () {},
-    ),
-  ],
-),
-const SizedBox(height: 24),
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: Image.asset(
+                      'assets/images/Google_Icons-09-512.webp',
+                      width: 40,
+                    ),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Image.asset(
+                      'assets/images/facebook.png',
+                      width: 40,
+                    ),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Image.asset(
+                      'assets/images/images.png',
+                      width: 40,
+                    ),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
 
               // Sign Up Text
               Row(
@@ -176,7 +165,9 @@ const SizedBox(height: 24),
                     style: TextStyle(color: Colors.grey),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed('/signup');
+                    },
                     child: const Text(
                       'SIGN UP',
                       style: TextStyle(

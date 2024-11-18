@@ -157,9 +157,4 @@ class FeedbackPage extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(const GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: FeedbackPage(), // Entry point to the FeedbackPage
-  ));
-}
+

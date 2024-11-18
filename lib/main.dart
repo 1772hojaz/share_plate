@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plate/UI/feedback_page.dart';
 import 'UI/food_listing.dart';
-import 'splash_screen.dart';
+import 'UI/splash_screen.dart';
 import 'UI/signin_page.dart';
 import 'UI/terms.dart';
 import 'UI/fogot_password.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'UI/signup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,9 +27,10 @@ class MyApp extends StatelessWidget {
       title: 'Share Plate',
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => const SplashScreen()),
+        GetPage(name: '/', page: () => SignUpScreen()),
         GetPage(name: '/home', page: () => FoodListingPage()),
-        GetPage(name: '/signin', page: () => const SignInPage()),
+        GetPage(name: '/signin', page: () => const SignInScreen()),
+        GetPage(name: '/signup', page: () => SignUpScreen()),
         GetPage(
             name: '/forgotpassword', page: () => const ForgotPasswordScreen()),
         GetPage(name: '/feedback', page: () => const FeedbackPage()),

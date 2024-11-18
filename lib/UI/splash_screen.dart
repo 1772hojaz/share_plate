@@ -87,7 +87,7 @@ class SplashScreenState extends State<SplashScreen>
                     ),
                   ),
                   onPressed: () {
-                    Get.toNamed('/signin');
+                    Get.toNamed('/signup');
                   },
                   child: const Text(
                     'Get Started!',
