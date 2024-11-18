@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:share_plate/UI/signin_page.dart';
+import 'package:share_plate/UI/food_listing.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -36,7 +38,8 @@ class AuthService {
       });
 
       // Navigate to the home screen after the data is saved
-      Get.offNamed('/'); // This will navigate to the home screen or root screen
+      Get.offNamed(
+          '/home'); // This will navigate to the home screen or root screen
     } on FirebaseAuthException catch (e) {
       String message = '';
 
@@ -71,5 +74,41 @@ class AuthService {
         fontSize: 14,
       );
     }
+  }
+
+  Future<void> signin(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      await Future.delayed(const Duration(seconds: 1));
+      Get.offNamed('/home');
+    } on FirebaseAuthException catch (e) {
+      String message = '';
+      if (e.code == 'invalid-email') {
+        message = 'No user found for that email';
+      } else if (e.code == 'invalid-credential') {
+        message = 'Wrong Password';
+      }
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14,
+      );
+    }
+  }
+
+  Future<void> signout({required BuildContext context}) async {
+    await FirebaseAuth.instance.signOut();
+    await Future.delayed(const Duration(seconds: 1));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignInScreen()),
+    );
   }
 }

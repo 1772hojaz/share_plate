@@ -3,18 +3,16 @@ import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
 import 'package:share_plate/UI/terms.dart';
 import 'package:share_plate/services/auth_service.dart';
+import 'signin_page.dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({super.key});
-  
 
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
-
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -22,8 +20,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool _isChecked = false;
   bool _isPasswordVisible = false;
-  
-  
 
   @override
   Widget build(BuildContext context) {
@@ -53,16 +49,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-              
               const SizedBox(height: 30),
-              _buildTextField("Name", "ex: Jon Smith",controller: _nameController),
+              _buildTextField("Name", "ex: Jon Smith",
+                  controller: _nameController),
               const SizedBox(height: 15),
-              _buildTextField(
-                  "Email", "ex: jon.smith@gmail.com", controller:  _emailController),
+              _buildTextField("Email", "ex: jon.smith@gmail.com",
+                  controller: _emailController),
               const SizedBox(height: 15),
-              _buildTextField("Location", "ex: Kigali, Kimironko", controller: _locationController),
+              _buildTextField("Location", "ex: Kigali, Kimironko",
+                  controller: _locationController),
               const SizedBox(height: 15),
-              _buildTextField("Password", "********", isPassword: true, controller: _passwordController),
+              _buildTextField("Password", "********",
+                  isPassword: true, controller: _passwordController),
               const SizedBox(height: 20),
               Row(
                 children: [
@@ -232,6 +230,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _navigateToSignIn() {
     // Navigate to the sign-in screen or handle sign-in logic
     // Replace this comment with actual navigation code
+    Get.to(() => SignInScreen());
     print("Navigating to Sign In screen");
   }
 }

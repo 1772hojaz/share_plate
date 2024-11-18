@@ -27,9 +27,9 @@ class MyApp extends StatelessWidget {
       title: 'Share Plate',
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => SignUpScreen()),
+        GetPage(name: '/', page: () => const SplashScreen()),
         GetPage(name: '/home', page: () => FoodListingPage()),
-        GetPage(name: '/signin', page: () => const SignInScreen()),
+        GetPage(name: '/signin', page: () => SignInScreen()),
         GetPage(name: '/signup', page: () => SignUpScreen()),
         GetPage(
             name: '/forgotpassword', page: () => const ForgotPasswordScreen()),
