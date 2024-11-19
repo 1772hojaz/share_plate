@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
-
 class TermsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,7 @@ class TermsPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,44 +32,49 @@ class TermsPage extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Clause 1
             _buildClause(
               'Clause 1',
               'All food shared through the app must be safe for consumption, '
-              'prepared and stored following local health regulations. Users must ensure '
-              'that food is properly labeled with any allergens and is within its expiration date.',
+                  'prepared and stored following local health regulations. Users must ensure '
+                  'that food is properly labeled with any allergens and is within its expiration date.',
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Clause 2
             _buildClause(
               'Clause 2',
               'Respectful Exchange: Users agree to communicate respectfully '
-              'and honestly with each other regarding the quantity and quality of food being shared. '
-              'Any issues or concerns should be reported to the app support team promptly.',
+                  'and honestly with each other regarding the quantity and quality of food being shared. '
+                  'Any issues or concerns should be reported to the app support team promptly.',
             ),
 
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
 
             // Buttons - one below the other
             Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch, // Full width buttons
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildButton('Agree & Continue', Colors.green, Colors.white, () {
-                  // Handle agree button press
+                  // Navigate to the next page
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("You agreed to the terms")),
+                  );
                 }),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 _buildButton('Disagree', Colors.red, Colors.white, () {
-                  // Handle disagree button press
+                  // Handle disagree action
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("You disagreed with the terms")),
+                  );
                 }),
               ],
             ),
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
     );
   }
 
@@ -83,9 +86,9 @@ class TermsPage extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.green,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(0),
-              topRight: Radius.circular(0),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
             ),
           ),
           padding: const EdgeInsets.all(16.0),
@@ -100,10 +103,10 @@ class TermsPage extends StatelessWidget {
           ),
         ),
 
-        // White background for the clause content (no border)
+        // White background for the clause content
         Container(
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(10),
@@ -117,7 +120,7 @@ class TermsPage extends StatelessWidget {
               fontSize: 14,
               color: Colors.black,
             ),
-            textAlign: TextAlign.center, // Align text to center
+            textAlign: TextAlign.left,
           ),
         ),
       ],
@@ -131,9 +134,9 @@ class TermsPage extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30), // More rounded corners
+          borderRadius: BorderRadius.circular(30),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 14), // Button padding
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 14),
       ),
       child: Text(
         text,
@@ -146,27 +149,4 @@ class TermsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomNavBar() {
-    return BottomNavigationBar(
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home, color: Colors.black),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.volunteer_activism, color: Colors.black),
-          label: 'Donate',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search, color: Colors.black),
-          label: 'Search',
-        ),
-      ],
-      selectedItemColor: Colors.green,
-      unselectedItemColor: Colors.black,
-      backgroundColor: Colors.white,
-      showSelectedLabels: false,
-      showUnselectedLabels: true,
-    );
-  }
 }

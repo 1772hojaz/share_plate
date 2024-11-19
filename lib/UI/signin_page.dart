@@ -94,7 +94,9 @@ class SignInScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.center,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed('/forgotpassword');
+                    },
                     child: const Text(
                       'Forgot Password?',
                       style: TextStyle(

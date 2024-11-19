@@ -63,16 +63,6 @@ class AuthService {
         textColor: Colors.white,
         fontSize: 14,
       );
-    } catch (e) {
-      // Handle any other exceptions
-      Fluttertoast.showToast(
-        msg: 'An error occurred. Please try again.',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.SNACKBAR,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14,
-      );
     }
   }
 
@@ -110,5 +100,26 @@ class AuthService {
       context,
       MaterialPageRoute(builder: (context) => SignInScreen()),
     );
+  }
+
+  Future<void> resetPassword( String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+
+      //Error handling
+    } on FirebaseAuthException catch (e) {
+      String message = '';
+      if (e.code == 'invalid-email') {
+        message = 'No user found for that email';
+      }
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14,
+      );
+    }
   }
 }
