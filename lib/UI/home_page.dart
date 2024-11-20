@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_core/firebase_core.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   // Firebase Firestore instance
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -169,51 +169,51 @@ class HomePage extends StatelessWidget {
   }
 
   // Handle Donate Food action and add data to Firestore
-  void handleDonateFood() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        await _firestore.collection('donations').add({
-          'userId': user.uid,
-          'food': 'Food donated',  // You can add more details like food type
-          'timestamp': FieldValue.serverTimestamp(),
-        });
-        // Notify the user that donation was successful
-        print('Donation added to Firestore');
-      } else {
-        // Handle user not logged in
+//  void handleDonateFood() async {
+  //  try {
+  //    final user = _auth.currentUser;
+   //   if (user != null) {
+   //     await _firestore.collection('donations').add({
+   //       'userId': user.uid,
+    //      'food': 'Food donated',  // You can add more details like food type
+    //      'timestamp': FieldValue.serverTimestamp(),
+   //     });
+     //   // Notify the user that donation was successful
+   //     print('Donation added to Firestore');
+   //   } else {
+  //      // Handle user not logged in
         print('User not logged in');
-      }
-    } catch (e) {
-      print('Error donating food: $e');
-    }
-  }
+ //     }
+ //   } catch (e) {
+ //     print('Error donating food: $e');
+ //   }
+//  }
 
   // Handle Receive Food action and fetch data from Firestore
-  void handleReceiveFood() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        final snapshot = await _firestore.collection('donations').get();
+//  void handleReceiveFood() async {
+//    try {
+//      final user = _auth.currentUser;
+//      if (user != null) {
+ //       final snapshot = await _firestore.collection('donations').get();
         // Display data (you could show this in a list or dialog)
-        snapshot.docs.forEach((doc) {
-          print(doc['food']);
-        });
-      } else {
-        print('User not logged in');
-      }
-    } catch (e) {
-      print('Error receiving food: $e');
-    }
-  }
+    //    snapshot.docs.forEach((doc) {
+  //        print(doc['food']);
+   //     });
+   //   } else {
+   //     print('User not logged in');
+ //     }
+ //   } catch (e) {
+  //    print('Error receiving food: $e');
+  //  }
+//  }
 
   // Handle user profile (login, logout, or navigation)
   void handleProfile(BuildContext context) {
-    final user = _auth.currentUser;
-    if (user != null) {
+//    final user = _auth.currentUser;
+  //  if (user != null) {
       // Show a logout dialog or navigate to the profile page
-      print('User is logged in');
-    } else {
+   //   print('User is logged in');
+//} else {
       // Navigate to the login screen
       Navigator.pushNamed(context, '/login');
     }
