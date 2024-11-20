@@ -64,10 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '253761949733',
     projectId: 'shareplate-4c505',
     storageBucket: 'shareplate-4c505.firebasestorage.app',
-    androidClientId:
-        '253761949733-66e9p7iav4esrj7ff20p0ian9nmfq97k.apps.googleusercontent.com',
-    iosClientId:
-        '253761949733-mal5kiup9287jvmhnhfu714ifu1frt3h.apps.googleusercontent.com',
+    androidClientId: '253761949733-66e9p7iav4esrj7ff20p0ian9nmfq97k.apps.googleusercontent.com',
+    iosClientId: '253761949733-mal5kiup9287jvmhnhfu714ifu1frt3h.apps.googleusercontent.com',
     iosBundleId: 'com.example.sharePlate',
   );
 
@@ -77,10 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '253761949733',
     projectId: 'shareplate-4c505',
     storageBucket: 'shareplate-4c505.firebasestorage.app',
-    androidClientId:
-        '253761949733-66e9p7iav4esrj7ff20p0ian9nmfq97k.apps.googleusercontent.com',
-    iosClientId:
-        '253761949733-mal5kiup9287jvmhnhfu714ifu1frt3h.apps.googleusercontent.com',
+    androidClientId: '253761949733-66e9p7iav4esrj7ff20p0ian9nmfq97k.apps.googleusercontent.com',
+    iosClientId: '253761949733-mal5kiup9287jvmhnhfu714ifu1frt3h.apps.googleusercontent.com',
     iosBundleId: 'com.example.sharePlate',
   );
 
@@ -93,4 +89,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'shareplate-4c505.firebasestorage.app',
     measurementId: 'G-1R0JHWR765',
   );
+
 }

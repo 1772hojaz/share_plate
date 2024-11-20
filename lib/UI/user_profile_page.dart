@@ -1,19 +1,139 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
+import '../services/firebase_service.dart';
 
 class UserProfileController extends GetxController {
+  final firebaseService = Get.find<FirebaseService>();
+
   var emailNotifications = false.obs;
   var smsNotifications = false.obs;
-  var userName = 'John D'.obs;
-  var userEmail = 'john.d@example.com'.obs;
-  var userAddress = 'Kigali, Rwanda'.obs;
+  var userName = ''.obs;
+  var userEmail = ''.obs;
+  var userAddress = ''.obs;
   var profileImagePath = ''.obs;
+  var isEditing = false.obs;
 
-  final RxList<Map<String, dynamic>> pastRequests = [
-    {'item': 'Fresh Apples - 5 kg', 'date': 'Oct 10, 2024'},
-    {'item': 'Assorted Vegetables - 3 kg', 'date': 'Oct 5, 2024'},
-  ].obs;
+  // Text editing controllers
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final addressController = TextEditingController();
+
+  final RxList<Map<String, dynamic>> pastRequests = <Map<String, dynamic>>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadUserProfile();
+    loadPastRequests();
+  }
+
+  Future<void> loadUserProfile() async {
+    try {
+      final userData = await firebaseService.getUserData();
+      if (userData != null && userData.exists) {
+        final data = userData.data() as Map<String, dynamic>;
+        userName.value = data['name'] ?? '';
+        userEmail.value = data['email'] ?? '';
+        userAddress.value = data['address'] ?? '';
+        emailNotifications.value = data['preferences']?['emailNotifications'] ?? false;
+        smsNotifications.value = data['preferences']?['smsNotifications'] ?? false;
+        profileImagePath.value = data['profileImage'] ?? '';
+
+        // Update text controllers
+        nameController.text = userName.value;
+        emailController.text = userEmail.value;
+        addressController.text = userAddress.value;
+      }
+    } catch (e) {
+      print('Error loading user profile: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to load profile',
+        backgroundColor: Colors.red[100],
+      );
+    }
+  }
+
+  Future<void> loadPastRequests() async {
+    try {
+      final requests = await FirebaseFirestore.instance
+          .collection('requests')
+          .where('recipient_id', isEqualTo: firebaseService.currentUser.value?.uid)
+          .orderBy('created_at', descending: true)
+          .get();
+
+      pastRequests.value = requests.docs.map((doc) {
+        final data = doc.data();
+        return {
+          'item': data['description'] ?? '',
+          'date': _formatDate(data['created_at'] as Timestamp),
+        };
+      }).toList();
+    } catch (e) {
+      print('Error loading past requests: $e');
+    }
+  }
+
+  String _formatDate(Timestamp timestamp) {
+    final date = timestamp.toDate();
+    return '${date.month}/${date.day}/${date.year}';
+  }
+
+  Future<void> updateProfile() async {
+    try {
+      await firebaseService.updateUserProfile(
+        name: nameController.text,
+        email: emailController.text,
+        address: addressController.text,
+        preferences: {
+          'emailNotifications': emailNotifications.value,
+          'smsNotifications': smsNotifications.value,
+        },
+      );
+
+      // Update local values
+      userName.value = nameController.text;
+      userEmail.value = emailController.text;
+      userAddress.value = addressController.text;
+
+      isEditing.value = false;
+      Get.snackbar(
+        'Success',
+        'Profile updated successfully',
+        backgroundColor: Colors.green[100],
+      );
+    } catch (e) {
+      print('Error updating profile: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to update profile',
+        backgroundColor: Colors.red[100],
+      );
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await firebaseService.signOut();
+    } catch (e) {
+      print('Error signing out: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to sign out',
+        backgroundColor: Colors.red[100],
+      );
+    }
+  }
+
+  @override
+  void onClose() {
+    nameController.dispose();
+    emailController.dispose();
+    addressController.dispose();
+    super.onClose();
+  }
 }
 
 class UserProfilePage extends StatelessWidget {
@@ -32,6 +152,21 @@ class UserProfilePage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: [
+          Obx(() => TextButton(
+            onPressed: () {
+              if (controller.isEditing.value) {
+                controller.updateProfile();
+              } else {
+                controller.isEditing.value = true;
+              }
+            },
+            child: Text(
+              controller.isEditing.value ? 'Save' : 'Edit',
+              style: const TextStyle(color: Colors.blue),
+            ),
+          )),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -84,14 +219,26 @@ class UserProfilePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Obx(() => _buildTextField('Name', controller.userName.value)),
-              Obx(() => _buildTextField('Contact Info', controller.userEmail.value)),
-              Obx(() => _buildTextField('Address', controller.userAddress.value)),
+              _buildTextField(
+                'Name',
+                controller.nameController,
+                enabled: controller.isEditing.value,
+              ),
+              _buildTextField(
+                'Email',
+                controller.emailController,
+                enabled: controller.isEditing.value,
+              ),
+              _buildTextField(
+                'Address',
+                controller.addressController,
+                enabled: controller.isEditing.value,
+              ),
               const SizedBox(height: 24),
 
               // Past Food Requests Section
               const Text(
-                'Past Food Request',
+                'Past Food Requests',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -138,12 +285,16 @@ class UserProfilePage extends StatelessWidget {
               Obx(() => _buildCheckboxTile(
                 'Email Notifications',
                 controller.emailNotifications.value,
-                    (value) => controller.emailNotifications.value = value ?? false,
+                controller.isEditing.value
+                    ? (value) => controller.emailNotifications.value = value ?? false
+                    : null,
               )),
               Obx(() => _buildCheckboxTile(
                 'SMS Notifications',
                 controller.smsNotifications.value,
-                    (value) => controller.smsNotifications.value = value ?? false,
+                controller.isEditing.value
+                    ? (value) => controller.smsNotifications.value = value ?? false
+                    : null,
               )),
               const SizedBox(height: 24),
 
@@ -170,10 +321,9 @@ class UserProfilePage extends StatelessWidget {
                             child: const Text('Cancel'),
                           ),
                           TextButton(
-                            onPressed: () {
-                              // TODO: Implement logout
+                            onPressed: () async {
                               Get.back();
-                              Get.back(); // Return to previous screen after logout
+                              await controller.signOut();
                             },
                             child: const Text(
                               'Logout',
@@ -215,7 +365,7 @@ class UserProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String label, String value) {
+  Widget _buildTextField(String label, TextEditingController controller, {bool enabled = false}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -230,8 +380,8 @@ class UserProfilePage extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           TextField(
-            controller: TextEditingController(text: value),
-            readOnly: true,
+            controller: controller,
+            enabled: enabled,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,
@@ -250,7 +400,7 @@ class UserProfilePage extends StatelessWidget {
   Widget _buildCheckboxTile(
       String title,
       bool value,
-      ValueChanged<bool?> onChanged,
+      ValueChanged<bool?>? onChanged,
       ) {
     return Row(
       children: [

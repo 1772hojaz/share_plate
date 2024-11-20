@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../services/firebase_service.dart';
 import 'user_profile_page.dart';
 
 // Navigation Controller for managing bottom nav state
@@ -13,8 +15,74 @@ class NavigationController extends GetxController {
 
 // Donor Home Controller for managing donor-specific state
 class DonorHomeController extends GetxController {
-  var userName = 'Sarah'.obs;
+  final firebaseService = Get.find<FirebaseService>();
+  var userName = ''.obs;
   var profileImagePath = ''.obs;
+
+  // Form controllers
+  final formKey = GlobalKey<FormState>();
+  final descriptionController = TextEditingController();
+  final quantityController = TextEditingController();
+  final locationController = TextEditingController();
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadUserProfile();
+  }
+
+  Future<void> loadUserProfile() async {
+    try {
+      final userData = await firebaseService.getUserData();
+      if (userData != null && userData.exists) {
+        final data = userData.data() as Map<String, dynamic>;
+        userName.value = data['name'] ?? '';
+        profileImagePath.value = data['profileImage'] ?? '';
+      }
+    } catch (e) {
+      print('Error loading user profile: $e');
+    }
+  }
+
+  Future<void> createFoodListing() async {
+    if (!formKey.currentState!.validate()) return;
+
+    try {
+      await FirebaseFirestore.instance.collection('food_items').add({
+        'donor_id': firebaseService.currentUser.value?.uid,
+        'description': descriptionController.text,
+        'quantity': int.parse(quantityController.text),
+        'pickup_location': locationController.text,
+        'status': 'available',
+        'created_at': FieldValue.serverTimestamp(),
+      });
+
+      Get.snackbar(
+        'Success',
+        'Food listing created successfully',
+        backgroundColor: Colors.green[100],
+      );
+
+      // Clear form
+      descriptionController.clear();
+      quantityController.clear();
+      locationController.clear();
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to create food listing',
+        backgroundColor: Colors.red[100],
+      );
+    }
+  }
+
+  @override
+  void onClose() {
+    descriptionController.dispose();
+    quantityController.dispose();
+    locationController.dispose();
+    super.onClose();
+  }
 }
 
 // Shared Bottom Navigation Bar Widget
@@ -23,7 +91,7 @@ class SharedBottomNavigationBar extends StatelessWidget {
   final Function(int) onTap;
 
   const SharedBottomNavigationBar({
-    super.key,  // Fixed: Changed 'key' to 'super.key'
+    super.key,
     required this.currentIndex,
     required this.onTap,
   });
@@ -145,76 +213,100 @@ class DonorHomePage extends GetView<DonorHomeController> {
             ),
             // Main Content
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 20),
-                    // Welcome Message
-                    Obx(() => Text(
-                      'Welcome back ${controller.userName.value}! Ready to share surplus food?',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 20),
+                      // Welcome Message
+                      Obx(() => Text(
+                        'Welcome back ${controller.userName.value}! Ready to share surplus food?',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                      const SizedBox(height: 16),
+                      // Logo
+                      Image.asset(
+                        'assets/sharing_is_caring_logo.png',
+                        width: screenSize.width * 0.8,
+                        fit: BoxFit.contain,
                       ),
-                      textAlign: TextAlign.center,
-                    )),
-                    const SizedBox(height: 16),
-                    // Logo
-                    Image.asset(
-                      'assets/sharing_is_caring_logo.png',
-                      width: screenSize.width * 0.8,
-                      fit: BoxFit.contain,
-                    ),
-                    const SizedBox(height: 16),
-                    // Create Food Listing Section
-                    const Text('Create Food Listing',
-                        style: TextStyle(fontSize: 18)),
-                    const SizedBox(height: 8),
-                    // Add Food Container
-                    Center(
-                      child: SizedBox(
-                        width: screenSize.width * 0.6,
-                        child: Container(
-                          height: 120,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Center(child: Icon(Icons.add, size: 48)),
+                      const SizedBox(height: 16),
+                      // Create Food Listing Section
+                      const Text('Create Food Listing',
+                          style: TextStyle(fontSize: 18)),
+                      const SizedBox(height: 16),
+                      // Food Listing Form
+                      Form(
+                        key: controller.formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: controller.descriptionController,
+                              decoration: const InputDecoration(
+                                labelText: 'Food Description',
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) =>
+                              value?.isEmpty ?? true ? 'Please enter a description' : null,
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: controller.quantityController,
+                              decoration: const InputDecoration(
+                                labelText: 'Quantity (kg)',
+                                border: OutlineInputBorder(),
+                              ),
+                              keyboardType: TextInputType.number,
+                              validator: (value) =>
+                              value?.isEmpty ?? true ? 'Please enter quantity' : null,
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: controller.locationController,
+                              decoration: const InputDecoration(
+                                labelText: 'Pickup Location',
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) =>
+                              value?.isEmpty ?? true ? 'Please enter pickup location' : null,
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    // Create Button
-                    Center(
-                      child: SizedBox(
-                        width: screenSize.width * 0.6,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // TODO: Implement create food listing functionality
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                      const SizedBox(height: 16),
+                      // Create Button
+                      Center(
+                        child: SizedBox(
+                          width: screenSize.width * 0.6,
+                          child: ElevatedButton(
+                            onPressed: () => controller.createFoodListing(),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
                             ),
-                          ),
-                          child: const Text(
-                            'Create',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                            child: const Text(
+                              'Create',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -226,7 +318,6 @@ class DonorHomePage extends GetView<DonorHomeController> {
           currentIndex: navigationController.currentIndex.value,
           onTap: (index) {
             navigationController.changePage(index);
-            // Add navigation logic here
             switch (index) {
               case 0:
               // Already on home page
