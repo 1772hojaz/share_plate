@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import "package:intl/intl.dart"; // For date formatting
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart'; // For date formatting
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -12,21 +13,15 @@ class _SearchScreenState extends State<SearchScreen> {
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(Duration(days: 1)); // Default date range
   TextEditingController searchController = TextEditingController(); // Search bar controller
-  List<Map<String, String>> filteredResults = []; // Filtered search results
+  List<Map<String, dynamic>> filteredResults = []; // Filtered search results
 
-  // Example search results (static for now)
-  final List<Map<String, String>> searchResults = [
-    {'name': 'Pizza', 'expiry': 'Expires in 2 days', 'category': 'Vegetarian'},
-    {'name': 'Sandwich', 'expiry': 'Expires today', 'category': 'Vegetarian'},
-    {'name': 'Fruit Basket', 'expiry': 'Expires in 3 days', 'category': 'Vegan'},
-    {'name': 'Pasta', 'expiry': 'Expires in 4 days', 'category': 'Vegetarian'},
-    {'name': 'Bread', 'expiry': 'Expires tomorrow', 'category': 'Gluten-Free'},
-  ];
+  // Fetch data from Firestore
+  Future<List<Map<String, dynamic>>> fetchSearchResults() async {
+    QuerySnapshot snapshot =
+    await FirebaseFirestore.instance.collection('food_items').get();
 
-  @override
-  void initState() {
-    super.initState();
-    filteredResults = searchResults; // Initialize filteredResults with all items
+    // Transform Firestore documents into a list of maps
+    return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
   // Function to format the dates
@@ -34,32 +29,28 @@ class _SearchScreenState extends State<SearchScreen> {
     return DateFormat('EEE, MMM d').format(date);
   }
 
-  // Function to filter search results based on search query
-  void filterSearchResults(String query) {
-    List<Map<String, String>> tempResults = [];
-    if (query.isNotEmpty) {
-      tempResults = searchResults
-          .where((result) => result['name']!.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    } else {
-      tempResults = searchResults; // Show all results if query is empty
-    }
+  // Function to filter search results based on search query and filters
+  void filterSearchResults() async {
+    String query = searchController.text.toLowerCase();
+    List<Map<String, dynamic>> allResults = await fetchSearchResults();
+    List<Map<String, dynamic>> tempResults = allResults.where((result) {
+      bool matchesQuery = query.isEmpty ||
+          (result['name'] as String).toLowerCase().contains(query);
+      bool matchesCategory = selectedFilterOption == 'Select' ||
+          result['category'] == selectedFilterOption;
+      // Add logic for proximity and date filtering if needed
+      return matchesQuery && matchesCategory;
+    }).toList();
+
     setState(() {
       filteredResults = tempResults;
     });
   }
 
-  // Function to apply filters
-  void applyFilters() {
-    List<Map<String, String>> tempResults = searchResults.where((result) {
-      bool matchesCategory = selectedFilterOption == 'Select' || result['category'] == selectedFilterOption;
-      // You can add additional filtering logic based on proximity and date here
-      return matchesCategory; // Change as needed to include other filters
-    }).toList();
-
-    setState(() {
-      filteredResults = tempResults; // Update filtered results based on applied filters
-    });
+  @override
+  void initState() {
+    super.initState();
+    filterSearchResults(); // Initial fetch of all data
   }
 
   @override
@@ -78,7 +69,7 @@ class _SearchScreenState extends State<SearchScreen> {
             TextField(
               controller: searchController,
               onChanged: (value) {
-                filterSearchResults(value); // Update results as user types
+                filterSearchResults(); // Update results as user types
               },
               decoration: InputDecoration(
                 labelText: 'Find Food Here',
@@ -102,97 +93,12 @@ class _SearchScreenState extends State<SearchScreen> {
               onChanged: (String? newValue) {
                 setState(() {
                   selectedFilterOption = newValue!;
+                  filterSearchResults();
                 });
               },
               decoration: InputDecoration(
                 labelText: 'Filter Options',
                 border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 16.0),
-
-            // Proximity Slider to select the search range
-            Text('Proximity (in km)'),
-            Slider(
-              value: proximityValue,
-              min: 0,
-              max: 50,
-              divisions: 10,
-              label: '${proximityValue.round()} km',
-              onChanged: (newValue) {
-                setState(() {
-                  proximityValue = newValue;
-                });
-              },
-            ),
-            SizedBox(height: 16.0),
-
-            // Expiry Date Range Picker
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Start'),
-                      TextButton(
-                        onPressed: () async {
-                          DateTime? picked = await showDatePicker(
-                            context: context,
-                            initialDate: startDate,
-                            firstDate: DateTime(2020),
-                            lastDate: DateTime(2101),
-                          );
-                          if (picked != null && picked != startDate) {
-                            setState(() {
-                              startDate = picked;
-                            });
-                          }
-                        },
-                        child: Text(formatDate(startDate)),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('End'),
-                      TextButton(
-                        onPressed: () async {
-                          DateTime? picked = await showDatePicker(
-                            context: context,
-                            initialDate: endDate,
-                            firstDate: DateTime(2020),
-                            lastDate: DateTime(2101),
-                          );
-                          if (picked != null && picked != endDate) {
-                            setState(() {
-                              endDate = picked;
-                            });
-                          }
-                        },
-                        child: Text(formatDate(endDate)),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-
-            // Apply Filters Button
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  applyFilters(); // Logic to apply filters and update search results
-                },
-                child: Text('Apply Filters'),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
-                  backgroundColor: Colors.green, // Use backgroundColor instead of primary
-                ),
               ),
             ),
             SizedBox(height: 16.0),
@@ -209,8 +115,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 itemBuilder: (context, index) {
                   final result = filteredResults[index];
                   return ListTile(
-                    title: Text(result['name']!),
-                    subtitle: Text(result['expiry']!),
+                    title: Text(result['name']),
+                    subtitle: Text(result['expiry']),
                   );
                 },
               )

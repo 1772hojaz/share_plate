@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart'; // Importing gestures.dart for TapGestureRecognizer
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -11,6 +12,12 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   bool _isChecked = false;
   bool _isPasswordVisible = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +48,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               const SizedBox(height: 30),
-              _buildTextField("Name", "ex: Jon Smith"),
+              _buildTextField("Name", "ex: Jon Smith", controller: _nameController),
               const SizedBox(height: 15),
-              _buildTextField("Email", "ex: jon.smith@gmail.com"),
+              _buildTextField("Email", "ex: jon.smith@gmail.com", controller: _emailController),
               const SizedBox(height: 15),
-              _buildTextField("Location", "ex: Kigali, Kimironko"),
+              _buildTextField("Location", "ex: Kigali, Kimironko", controller: _locationController),
               const SizedBox(height: 15),
-              _buildTextField("Password", "********", isPassword: true),
+              _buildTextField("Password", "********", isPassword: true, controller: _passwordController),
               const SizedBox(height: 20),
               Row(
                 children: [
@@ -84,15 +91,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Handle sign-up logic
-                    print("Signing Up...");
+                  onPressed: () async {
+                    // Handle Firebase sign-up logic
+                    await _signUpWithEmailPassword();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Colors.green, // Use backgroundColor instead of primary
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 100, vertical: 15),
+                    backgroundColor: Colors.green, // Use backgroundColor instead of primary
+                    padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -161,8 +166,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildTextField(String label, String hint, {bool isPassword = false}) {
+  Widget _buildTextField(String label, String hint, {bool isPassword = false, TextEditingController? controller}) {
     return TextField(
+      controller: controller,
       obscureText: isPassword && !_isPasswordVisible,
       decoration: InputDecoration(
         labelText: label,
@@ -174,15 +180,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         focusedBorder: InputBorder.none, // Remove focused border
         suffixIcon: isPassword
             ? IconButton(
-                icon: Icon(
-                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _isPasswordVisible = !_isPasswordVisible;
-                  });
-                },
-              )
+          icon: Icon(
+            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: () {
+            setState(() {
+              _isPasswordVisible = !_isPasswordVisible;
+            });
+          },
+        )
             : null,
       ),
     );
@@ -197,6 +203,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
         backgroundImage: AssetImage(imagePath),
       ),
     );
+  }
+
+  Future<void> _signUpWithEmailPassword() async {
+    try {
+      final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      // Successfully signed up
+      print("User signed up: ${userCredential.user?.email}");
+      // Navigate to home or dashboard
+    } on FirebaseAuthException catch (e) {
+      // Handle Firebase errors
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _showTermsAndPolicy() {

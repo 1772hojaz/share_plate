@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "703700643705",
+    "project_id": "shareplateapp-75b34",
+    "storage_bucket": "shareplateapp-75b34.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703700643705:android:8e6192d550b0a9a66ac9a8",
+        "android_client_info": {
+          "package_name": "com.example.share_plate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFyyksuLpNivd_ZwdP9uoFKjgS_PFB7SU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703700643705:android:abd33fde13d214826ac9a8",
+        "android_client_info": {
+          "package_name": "com.shareplate_rwanda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFyyksuLpNivd_ZwdP9uoFKjgS_PFB7SU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

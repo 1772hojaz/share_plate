@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  // Firebase Firestore instance
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,8 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.account_circle, color: Colors.black),
             onPressed: () {
-              // Handle profile button click
+              // Navigate to profile or handle user login/logout
+              handleProfile(context);
             },
           ),
         ],
@@ -34,7 +42,7 @@ class HomePage extends StatelessWidget {
           children: [
             // Banner Image
             Image.asset(
-              'assets/images/food_sharing.jpg', // Replace with your actual image path
+              'assets/images/food_sharing.jpg',
               height: 150,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -66,16 +74,16 @@ class HomePage extends StatelessWidget {
                 buildFoodButton(
                   'Donate food',
                   'assets/images/donate_food.jpg',
-                  () {
-                    // Handle Donate Food click
+                      () {
+                    handleDonateFood();
                   },
                 ),
                 // Reception button
                 buildFoodButton(
                   'Receive food',
                   'assets/images/receive_food.jpg',
-                  () {
-                    // Handle Receive Food click
+                      () {
+                    handleReceiveFood();
                   },
                 ),
               ],
@@ -90,16 +98,11 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.green,
         selectedItemColor: Colors.black,
-        unselectedItemColor:
-            Colors.black, // Make the unselected item color the same as selected
-        showSelectedLabels:
-            true, // Ensure labels are visible for selected items
-        showUnselectedLabels:
-            true, // Ensure labels are visible for unselected items
-        selectedLabelStyle:
-            const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-        unselectedLabelStyle:
-            const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        unselectedItemColor: Colors.black,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        unselectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -126,11 +129,11 @@ class HomePage extends StatelessWidget {
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
-        width: 127, // Decreased width of the button
-        height: 214, // Decreased height of the button
+        width: 127,
+        height: 214,
         decoration: BoxDecoration(
-          color: Colors.grey[200], // Gray background
-          borderRadius: BorderRadius.circular(10), // Rounded corners
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -138,27 +141,24 @@ class HomePage extends StatelessWidget {
             // Green Header for the Button Text
             Container(
               color: Colors.green,
-              padding: const EdgeInsets.symmetric(
-                  vertical: 8), // Decreased vertical padding
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Text(
                 label,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 8, // Decreased font size
+                  fontSize: 8,
                   color: Colors.white,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-
             // Image below the green text section
             Padding(
-              padding:
-                  const EdgeInsets.all(8.0), // Add some padding for the image
+              padding: const EdgeInsets.all(8.0),
               child: Image.asset(
                 imagePath,
-                height: 80, // Decreased height of the image inside the button
+                height: 80,
                 fit: BoxFit.contain,
               ),
             ),
@@ -166,5 +166,56 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Handle Donate Food action and add data to Firestore
+  void handleDonateFood() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        await _firestore.collection('donations').add({
+          'userId': user.uid,
+          'food': 'Food donated',  // You can add more details like food type
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+        // Notify the user that donation was successful
+        print('Donation added to Firestore');
+      } else {
+        // Handle user not logged in
+        print('User not logged in');
+      }
+    } catch (e) {
+      print('Error donating food: $e');
+    }
+  }
+
+  // Handle Receive Food action and fetch data from Firestore
+  void handleReceiveFood() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        final snapshot = await _firestore.collection('donations').get();
+        // Display data (you could show this in a list or dialog)
+        snapshot.docs.forEach((doc) {
+          print(doc['food']);
+        });
+      } else {
+        print('User not logged in');
+      }
+    } catch (e) {
+      print('Error receiving food: $e');
+    }
+  }
+
+  // Handle user profile (login, logout, or navigation)
+  void handleProfile(BuildContext context) {
+    final user = _auth.currentUser;
+    if (user != null) {
+      // Show a logout dialog or navigate to the profile page
+      print('User is logged in');
+    } else {
+      // Navigate to the login screen
+      Navigator.pushNamed(context, '/login');
+    }
   }
 }

@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart'; // Import the HomePage
-import 'search_screen.dart'; // Import the SearchScreen
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart'; // Ensure this file is generated using Firebase CLI or FlutterFire CLI
+import 'home_page.dart'; // Import the HomePage widget file
 
-void main() {
+void main() async {
+  // Ensure widget binding is initialized before Firebase initialization
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Run the app
   runApp(const SharePlateApp());
 }
 
@@ -17,7 +27,7 @@ class SharePlateApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const HomePage(), // Set the home page
+      home: HomePage(), // Set HomePage as the initial screen
     );
   }
 }
