@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart'; // Ensure this file is generated using Firebase CLI or FlutterFire CLI
-import 'UI/home_page.dart'; // Import the HomePage widget file
+// import 'package:firebase_core/firebase_core.dart';
+// import 'firebase_options.dart'; // Ensure this file is generated using Firebase CLI or FlutterFire CLI
+// import 'UI/home_page.dart'; // Import the HomePage widget file
 
 void main() async {
   // Ensure widget binding is initialized before Firebase initialization
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // await Firebase.initializeApp(
+   // options: DefaultFirebaseOptions.currentPlatform,
+ // );
 
   // Run the app
   runApp(const SharePlateApp());
