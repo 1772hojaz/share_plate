@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart'; // For date formatting
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:intl/intl.dart'; // For date formatting
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -16,17 +16,17 @@ class _SearchScreenState extends State<SearchScreen> {
   List<Map<String, dynamic>> filteredResults = []; // Filtered search results
 
   // Fetch data from Firestore
-  Future<List<Map<String, dynamic>>> fetchSearchResults() async {
-    QuerySnapshot snapshot =
-    await FirebaseFirestore.instance.collection('food_items').get();
+// Future<List<Map<String, dynamic>>> fetchSearchResults() async {
+  //  QuerySnapshot snapshot =
+ //   await FirebaseFirestore.instance.collection('food_items').get();
 
     // Transform Firestore documents into a list of maps
-    return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+ //   return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
   // Function to format the dates
-  String formatDate(DateTime date) {
-    return DateFormat('EEE, MMM d').format(date);
+ // String formatDate(DateTime date) {
+  //  return DateFormat('EEE, MMM d').format(date);
   }
 
   // Function to filter search results based on search query and filters
