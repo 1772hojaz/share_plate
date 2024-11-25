@@ -1,33 +1,19 @@
 import 'package:flutter/material.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'firebase_options.dart'; // Ensure this file is generated using Firebase CLI or FlutterFire CLI
-// import 'UI/home_page.dart'; // Import the HomePage widget file
+import 'package:get/get.dart';
+import 'routes.dart';
 
-void main() async {
-  // Ensure widget binding is initialized before Firebase initialization
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize Firebase
-  // await Firebase.initializeApp(
-   // options: DefaultFirebaseOptions.currentPlatform,
- // );
-
-  // Run the app
-  runApp(const SharePlateApp());
+void main() {
+  runApp(MyApp());
 }
 
-class SharePlateApp extends StatelessWidget {
-  const SharePlateApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      title: 'Verification App',
       debugShowCheckedModeBanner: false,
-      title: 'SharePlate Rwanda',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: HomePage(), // Set HomePage as the initial screen
+      initialRoute: '/verification',
+      getPages: AppRoutes.routes,
     );
   }
 }
