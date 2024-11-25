@@ -1,1 +1,101 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'dart:convert'; // For JSON encoding
+import 'package:http/http.dart' as http; // HTTP package for API calls
+
+class VerificationPage extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
+
+  Future<void> sendCode(String email) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://localhost:5000/api/verification/send-code'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email}),
+      );
+      if (response.statusCode == 200) {
+        Get.snackbar('Success', 'Verification code sent to $email');
+      } else {
+        Get.snackbar('Error', 'Failed to send code: ${response.body}');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to connect to server.');
+    }
+  }
+
+  Future<void> verifyCode(String email, String code) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://localhost:5000/api/verification/verify-code'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'code': code}),
+      );
+      if (response.statusCode == 200) {
+        Get.toNamed('/confirmation');
+      } else {
+        Get.snackbar('Error', 'Verification failed: ${response.body}');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to connect to server.');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Verification'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Enter your email to receive a verification code:',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                sendCode(_emailController.text);
+              },
+              child: Text('Send Code'),
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Enter the verification code:',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: _codeController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: 'Verification Code',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                verifyCode(_emailController.text, _codeController.text);
+              },
+              child: Text('Verify'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
