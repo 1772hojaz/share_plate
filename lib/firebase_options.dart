@@ -31,7 +31,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
+              'you can reconfigure this by running the FlutterFire CLI again.',
         );
       default:
         throw UnsupportedError(
@@ -65,9 +65,9 @@ class DefaultFirebaseOptions {
     projectId: 'shareplate-4c505',
     storageBucket: 'shareplate-4c505.firebasestorage.app',
     androidClientId:
-        '253761949733-66e9p7iav4esrj7ff20p0ian9nmfq97k.apps.googleusercontent.com',
+    '253761949733-66e9p7iav4esrj7ff20p0ian9nmfq97k.apps.googleusercontent.com',
     iosClientId:
-        '253761949733-mal5kiup9287jvmhnhfu714ifu1frt3h.apps.googleusercontent.com',
+    '253761949733-mal5kiup9287jvmhnhfu714ifu1frt3h.apps.googleusercontent.com',
     iosBundleId: 'com.example.sharePlate',
   );
 
@@ -78,9 +78,9 @@ class DefaultFirebaseOptions {
     projectId: 'shareplate-4c505',
     storageBucket: 'shareplate-4c505.firebasestorage.app',
     androidClientId:
-        '253761949733-66e9p7iav4esrj7ff20p0ian9nmfq97k.apps.googleusercontent.com',
+    '253761949733-66e9p7iav4esrj7ff20p0ian9nmfq97k.apps.googleusercontent.com',
     iosClientId:
-        '253761949733-mal5kiup9287jvmhnhfu714ifu1frt3h.apps.googleusercontent.com',
+    '253761949733-mal5kiup9287jvmhnhfu714ifu1frt3h.apps.googleusercontent.com',
     iosBundleId: 'com.example.sharePlate',
   );
 
