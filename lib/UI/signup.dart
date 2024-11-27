@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/gestures.dart'; // Importing gestures.dart for TapGestureRecognizer
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -17,7 +17,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
 
-//  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             // Handle back navigation
+            Navigator.pop(context);
           },
         ),
       ),
@@ -78,10 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             decoration: TextDecoration.underline,
                           ),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              // Handle the terms and policy action here
-                              _showTermsAndPolicy();
-                            },
+                            ..onTap = _showTermsAndPolicy,
                         ),
                       ],
                     ),
@@ -96,7 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     await _signUpWithEmailPassword();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // Use backgroundColor instead of primary
+                    backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -120,8 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildSocialButton('assets/images/google.png', () {
-                    // Handle Google sign-up logic
-                    print("Signing up with Google...");
+                    _signUpWithGoogle();
                   }),
                   const SizedBox(width: 10),
                   _buildSocialButton('assets/images/facebook.png', () {
@@ -138,10 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 20),
               Center(
                 child: GestureDetector(
-                  onTap: () {
-                    // Handle sign-in logic here
-                    _navigateToSignIn();
-                  },
+                  onTap: _navigateToSignIn,
                   child: RichText(
                     text: const TextSpan(
                       text: 'Have an account? ',
@@ -175,9 +169,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         hintText: hint,
         filled: true,
         fillColor: Colors.grey[100],
-        border: InputBorder.none, // Remove border
-        enabledBorder: InputBorder.none, // Remove enabled border
-        focusedBorder: InputBorder.none, // Remove focused border
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
         suffixIcon: isPassword
             ? IconButton(
           icon: Icon(
@@ -211,11 +205,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-      // Successfully signed up
       print("User signed up: ${userCredential.user?.email}");
-      // Navigate to home or dashboard
     } on FirebaseAuthException catch (e) {
-      // Handle Firebase errors
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
@@ -226,8 +217,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
+  Future<void> _signUpWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      print("User signed up with Google: ${userCredential.user?.email}");
+    } catch (e) {
+      print("Google Sign-In failed: $e");
+    }
+  }
+
   void _showTermsAndPolicy() {
-    // Show a dialog or navigate to a terms and policy page
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -248,8 +255,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _navigateToSignIn() {
-    // Navigate to the sign-in screen or handle sign-in logic
-    // Replace this comment with actual navigation code
     print("Navigating to Sign In screen");
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'UI/home_page.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'firebase_options.dart'; // Ensure this file is generated using Firebase CLI or FlutterFire CLI
 // import 'UI/home_page.dart'; // Import the HomePage widget file
