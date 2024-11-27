@@ -1,39 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'reserve.dart'; // Import the Reserve page
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Model class for food items
 class FoodItem {
-  String image;
-  String description; // New field for the food description
+  String image; // Image URL
+  String description;
   bool isReserved;
+  String id; // Firestore document ID
 
-  FoodItem(
-      {required this.image,
-      required this.description,
-      this.isReserved = false});
+  FoodItem({
+    required this.image,
+    required this.description,
+    this.isReserved = false,
+    required this.id,
+  });
+
+  // Convert a Firestore document to FoodItem object
+  factory FoodItem.fromFirestore(Map<String, dynamic> data, String id) {
+    return FoodItem(
+      image: data['image_url'] ?? '',
+      description: data['description'] ?? '',
+      isReserved: data['isReserved'] ?? false,
+      id: id,
+    );
+  }
+
+  // Convert FoodItem to Map for Firestore upload
+  Map<String, dynamic> toMap() {
+    return {
+      'image': image,
+      'description': description,
+      'isReserved': isReserved,
+    };
+  }
 }
 
 // Controller for managing food listings
 class FoodListingPageController extends GetxController {
-  var foodList = <FoodItem>[
-    FoodItem(
-        image: 'assets/shareplateburger1.jpeg',
-        description: 'Delicious burger with extra cheese.'),
-    FoodItem(
-        image: 'assets/food2.jpeg',
-        description: 'Freshly baked pizza with toppings.'),
-    FoodItem(
-        image: 'assets/food3.jpeg',
-        description: 'Healthy salad with vegetables.'),
-  ].obs;
+  var foodList = <FoodItem>[].obs;
 
-  void reserveItem(int index) {
-    foodList[index].isReserved = true;
+  // Fetch food items from Firestore
+  Future<void> fetchFoodItems() async {
+    try {
+      var querySnapshot =
+          await FirebaseFirestore.instance.collection('food_items').get();
+      foodList.value = querySnapshot.docs.map((doc) {
+        return FoodItem.fromFirestore(doc.data(), doc.id);
+      }).toList();
+    } catch (e) {
+      Get.snackbar("Error", "Failed to fetch food items: $e");
+    }
+  }
+
+  // Reserve an item (mark as reserved in Firestore)
+  void reserveItem(int index) async {
+    var foodItem = foodList[index];
+    foodItem.isReserved = true;
     foodList.refresh();
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('food_items')
+          .doc(foodItem.id)
+          .update({
+        'isReserved': true,
+      });
+      Get.snackbar("Success", "Item Reserved!");
+    } catch (e) {
+      Get.snackbar("Error", "Failed to reserve item: $e");
+    }
   }
 }
 
+// The main FoodListingPage
 class FoodListingPage extends StatelessWidget {
   FoodListingPage({super.key});
 
@@ -42,16 +82,18 @@ class FoodListingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Load food items from Firestore when the page is loaded
+    controller.fetchFoodItems();
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Transparent app bar
-        elevation: 0, // Remove app bar shadow
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         actions: [
-          // User profile icon
           GestureDetector(
             onTap: () {
-              // Navigate to user profile when clicked
-              Get.to(UserProfilePage()); // Use GetX for navigation
+              // Navigate to user profile page (for demo purposes, it's just a placeholder)
+              Get.to(UserProfilePage());
             },
             child: Container(
               margin: const EdgeInsets.only(right: 16, top: 16),
@@ -60,8 +102,7 @@ class FoodListingPage extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: const DecorationImage(
-                  image: AssetImage(
-                      'assets/shareplate-icon.jpeg'), // Replace with your image
+                  image: AssetImage('assets/shareplate-icon.jpeg'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -71,71 +112,83 @@ class FoodListingPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Image at the top before the list
+          // Header image
           Container(
-            margin: const EdgeInsets.all(16), // Adds margin around the image
+            margin: const EdgeInsets.all(16),
             width: 385,
             height: 146,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16), // Corner radius of 16
+              borderRadius: BorderRadius.circular(16),
               image: const DecorationImage(
-                image: AssetImage(
-                    'assets/getameal.jpeg'), // Replace with your image
-                fit: BoxFit.cover, // Ensures the image fills the container
+                image: AssetImage('assets/getameal.jpeg'),
+                fit: BoxFit.cover,
               ),
             ),
           ),
+          // Food items list
           Expanded(
             child: Obx(() {
               return ListView.builder(
-                itemCount:
-                    controller.foodList.length, // Dynamically using GetX state
+                itemCount: controller.foodList.length,
                 itemBuilder: (context, index) {
                   var foodItem = controller.foodList[index];
                   return GestureDetector(
                     onTap: () {
-                      // Mark the food item as reserved
-                      controller.reserveItem(index);
-
-                      // Navigate to Reserve page with selected image path
-                      Get.to(() => Reserve(
-                            imagePath: foodItem.image,
-                            description: foodItem.description,
-                          ));
+                      // Mark the item as reserved when tapped
+                      if (!foodItem.isReserved) {
+                        controller.reserveItem(index);
+                      } else {
+                        Get.snackbar("Already Reserved",
+                            "This item has already been reserved.");
+                      }
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Stack(
                         children: [
-                          // Food image container with updated dimensions
+                          // Food item image
                           Container(
-                            height: 285, // height  285
-                            width: 385, // width 385
+                            height: 285,
+                            width: 385,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               image: DecorationImage(
-                                image: AssetImage(foodItem
-                                    .image), // Use dynamic image from list
+                                image: NetworkImage(foodItem
+                                    .image), // Changed to NetworkImage for URL
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
-                          // "Reserved" or "Available" text overlay on top-left corner
+                          // Food description overlay (instead of "Available")
                           Positioned(
                             top: 10,
                             left: 10,
                             child: Text(
-                              foodItem.isReserved ? "Reserved" : "Available",
+                              foodItem
+                                  .description, // Show food description instead
                               style: TextStyle(
-                                color: foodItem.isReserved
-                                    ? Colors.red
-                                    : Colors.black
-                                        .withOpacity(0.7), // Red for reserved
-                                fontSize: 14, // Small font size
+                                color: Colors.white,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
+                                backgroundColor: Colors.black.withOpacity(0.5),
                               ),
                             ),
                           ),
+                          // Reserved indicator
+                          if (foodItem.isReserved)
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                color: Colors.green,
+                                child: Text(
+                                  'Reserved',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -147,7 +200,7 @@ class FoodListingPage extends StatelessWidget {
           // Bottom navigation bar
           Container(
             height: 95,
-            width: 403, // Bottom navigation bar width
+            width: 403,
             color: const Color(0xFF00B140),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -162,8 +215,7 @@ class FoodListingPage extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.volunteer_activism,
-                        color: Colors.black), // Appropriate donate icon
+                    Icon(Icons.volunteer_activism, color: Colors.black),
                     Text('Donate', style: TextStyle(color: Colors.black)),
                   ],
                 ),
@@ -183,7 +235,7 @@ class FoodListingPage extends StatelessWidget {
   }
 }
 
-// Example UserProfilePage (Replace this with your actual profile page)
+// Example UserProfilePage (for demo purposes, replace with your actual profile page)
 class UserProfilePage extends StatelessWidget {
   const UserProfilePage({super.key});
 
