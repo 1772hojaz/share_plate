@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/gestures.dart'; // Importing gestures.dart for TapGestureRecognizer
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
+import 'package:get/get.dart';
+import 'package:share_plate/UI/terms.dart';
+import 'package:share_plate/services/auth_service.dart';
+import 'signin_page.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -10,14 +13,13 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  bool _isChecked = false;
-  bool _isPasswordVisible = false;
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
 
-//  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isChecked = false;
+  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +50,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               const SizedBox(height: 30),
-              _buildTextField("Name", "ex: Jon Smith", controller: _nameController),
+              _buildTextField("Name", "ex: Jon Smith",
+                  controller: _nameController),
               const SizedBox(height: 15),
-              _buildTextField("Email", "ex: jon.smith@gmail.com", controller: _emailController),
+              _buildTextField("Email", "ex: jon.smith@gmail.com",
+                  controller: _emailController),
               const SizedBox(height: 15),
-              _buildTextField("Location", "ex: Kigali, Kimironko", controller: _locationController),
+              _buildTextField("Location", "ex: Kigali, Kimironko",
+                  controller: _locationController),
               const SizedBox(height: 15),
-              _buildTextField("Password", "********", isPassword: true, controller: _passwordController),
+              _buildTextField("Password", "********",
+                  isPassword: true, controller: _passwordController),
               const SizedBox(height: 20),
               Row(
                 children: [
@@ -92,12 +98,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    // Handle Firebase sign-up logic
-                    await _signUpWithEmailPassword();
+                    await AuthService().signup(
+                        name: _nameController.text,
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                        location: _locationController.text,
+                        context: context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // Use backgroundColor instead of primary
-                    padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                    backgroundColor:
+                        Colors.green, // Use backgroundColor instead of primary
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 100, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -119,7 +131,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildSocialButton('assets/images/google.png', () {
+                  _buildSocialButton('assets/images/Google_Icons-09-512.webp',
+                      () {
                     // Handle Google sign-up logic
                     print("Signing up with Google...");
                   }),
@@ -129,7 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     print("Signing up with Facebook...");
                   }),
                   const SizedBox(width: 10),
-                  _buildSocialButton('assets/images/twitter.jpeg', () {
+                  _buildSocialButton('assets/images/images.png', () {
                     // Handle Twitter sign-up logic
                     print("Signing up with Twitter...");
                   }),
@@ -166,7 +179,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildTextField(String label, String hint, {bool isPassword = false, TextEditingController? controller}) {
+  Widget _buildTextField(
+    String label,
+    String hint, {
+    bool isPassword = false,
+    TextEditingController? controller,
+  }) {
     return TextField(
       controller: controller,
       obscureText: isPassword && !_isPasswordVisible,
@@ -180,15 +198,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         focusedBorder: InputBorder.none, // Remove focused border
         suffixIcon: isPassword
             ? IconButton(
-          icon: Icon(
-            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-          ),
-          onPressed: () {
-            setState(() {
-              _isPasswordVisible = !_isPasswordVisible;
-            });
-          },
-        )
+                icon: Icon(
+                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isPasswordVisible = !_isPasswordVisible;
+                  });
+                },
+              )
             : null,
       ),
     );
@@ -205,51 +223,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Future<void> _signUpWithEmailPassword() async {
-    try {
-      final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-      // Successfully signed up
-      print("User signed up: ${userCredential.user?.email}");
-      // Navigate to home or dashboard
-    } on FirebaseAuthException catch (e) {
-      // Handle Firebase errors
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
   void _showTermsAndPolicy() {
-    // Show a dialog or navigate to a terms and policy page
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Terms and Policy"),
-          content: const Text("Here you can display your terms and policy."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Close"),
-            ),
-          ],
-        );
-      },
-    );
+    Get.to(() => TermsPage()); // Navigate to details page
   }
 
   void _navigateToSignIn() {
     // Navigate to the sign-in screen or handle sign-in logic
     // Replace this comment with actual navigation code
+    Get.to(() => SignInScreen());
     print("Navigating to Sign In screen");
   }
 }

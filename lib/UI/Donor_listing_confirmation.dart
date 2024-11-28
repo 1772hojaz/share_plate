@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 
+// DonorListingConfirmationPage.dart
 class DonorListingConfirmationPage extends StatelessWidget {
-  const DonorListingConfirmationPage({super.key});
+  final String description;
+  final int quantity;
+  final String location;
+  final String imageUrl;
+
+  const DonorListingConfirmationPage({
+    super.key,
+    required this.description,
+    required this.quantity,
+    required this.location,
+    required this.imageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +24,8 @@ class DonorListingConfirmationPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.check_circle_outline, color: Colors.green, size: 100),
+            const Icon(Icons.check_circle_outline,
+                color: Colors.green, size: 100),
             const SizedBox(height: 16),
             const Text(
               "Your food listing has been successfully created!",
@@ -20,21 +33,29 @@ class DonorListingConfirmationPage extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            
+
+            // Display food listing details
+            Text("Description: $description"),
+            Text("Quantity: $quantity kg"),
+            Text("Pickup Location: $location"),
+
+            const SizedBox(height: 20),
+
             // View Other Listings Button
             ElevatedButton(
               onPressed: () {
                 // Navigate to Food Listings page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const FoodListingsPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const FoodListingsPage()),
                 );
               },
               child: const Text("View Other Listings"),
             ),
-            
+
             const SizedBox(height: 10),
-            
+
             // Log Out Button
             ElevatedButton(
               onPressed: () {
@@ -68,4 +89,3 @@ class FoodListingsPage extends StatelessWidget {
     );
   }
 }
-

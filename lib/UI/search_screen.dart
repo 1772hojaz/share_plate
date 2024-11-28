@@ -1,150 +1,200 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:intl/intl.dart'; // For date formatting
+import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../services/firebase_service.dart';
 
-class SearchScreen extends StatefulWidget {
-  @override
-  _SearchScreenState createState() => _SearchScreenState();
-}
+class SearchController extends GetxController {
+  // Observables for search fields
+  var searchQuery = ''.obs;
+  var locationFilter = ''.obs;
+  var minQuantityFilter = 0.obs;
+  var maxQuantityFilter = 100.obs;
+  var isAvailableFilter = true.obs;
 
-class _SearchScreenState extends State<SearchScreen> {
-  String selectedFilterOption = 'Select';
-  double proximityValue = 10.0; // Default proximity slider value
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now().add(Duration(days: 1)); // Default date range
-  TextEditingController searchController = TextEditingController(); // Search bar controller
-  List<Map<String, dynamic>> filteredResults = []; // Filtered search results
+  // Observable for search results
+  var foodItems = <DocumentSnapshot>[].obs;
 
-  // Fetch data from Firestore
-// Future<List<Map<String, dynamic>>> fetchSearchResults() async {
-  //  QuerySnapshot snapshot =
- //   await FirebaseFirestore.instance.collection('food_items').get();
+  // Firebase service
+  final firebaseService = Get.find<FirebaseService>();
 
-    // Transform Firestore documents into a list of maps
- //   return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-  }
+  // Debounced search function to avoid frequent calls
+  Timer? _debounce;
 
-  // Function to format the dates
- // String formatDate(DateTime date) {
-  //  return DateFormat('EEE, MMM d').format(date);
-  }
+  // Method to execute the search query
+  void searchFoodItems() async {
+    // Cancel any existing debounce timer
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
 
-  // Function to filter search results based on search query and filters
-  void filterSearchResults() async {
-    String query = searchController.text.toLowerCase();
-    List<Map<String, dynamic>> allResults = await fetchSearchResults();
-    List<Map<String, dynamic>> tempResults = allResults.where((result) {
-      bool matchesQuery = query.isEmpty ||
-          (result['name'] as String).toLowerCase().contains(query);
-      bool matchesCategory = selectedFilterOption == 'Select' ||
-          result['category'] == selectedFilterOption;
-      // Add logic for proximity and date filtering if needed
-      return matchesQuery && matchesCategory;
-    }).toList();
+    // Set a new debounce timer
+    _debounce = Timer(const Duration(milliseconds: 500), () async {
+      try {
+        Query query = FirebaseFirestore.instance.collection('food_items');
 
-    setState(() {
-      filteredResults = tempResults;
+        // Filter by description (search query)
+        if (searchQuery.value.isNotEmpty) {
+          query = query
+              .where('description', isGreaterThanOrEqualTo: searchQuery.value)
+              .where('description',
+                  isLessThanOrEqualTo: searchQuery.value + '\uf8ff');
+        }
+
+        // Filter by location
+        if (locationFilter.value.isNotEmpty) {
+          query =
+              query.where('pickup_location', isEqualTo: locationFilter.value);
+        }
+
+        // Filter by quantity range
+        query = query
+            .where('quantity', isGreaterThanOrEqualTo: minQuantityFilter.value)
+            .where('quantity', isLessThanOrEqualTo: maxQuantityFilter.value);
+
+        // Filter by availability status
+        query = query.where('status',
+            isEqualTo: isAvailableFilter.value ? 'available' : 'unavailable');
+
+        // Fetch the results
+        final result = await query.get();
+        foodItems.value = result.docs;
+      } catch (e) {
+        Get.snackbar('Error', 'Failed to fetch food items: $e',
+            backgroundColor: Colors.red[100]);
+      }
     });
   }
+}
 
-  @override
-  void initState() {
-    super.initState();
-    filterSearchResults(); // Initial fetch of all data
-  }
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final SearchController searchController = Get.put(SearchController());
+
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Food Search')),
+        title: const Text('Search Food Items'),
         backgroundColor: Colors.green,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // Search bar for searching food items
+          children: [
+            // Search bar for description
             TextField(
-              controller: searchController,
-              onChanged: (value) {
-                filterSearchResults(); // Update results as user types
-              },
-              decoration: InputDecoration(
-                labelText: 'Find Food Here',
-                hintText: 'Search for food items',
+              decoration: const InputDecoration(
+                hintText: 'Search for food...',
+                border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
               ),
-            ),
-            SizedBox(height: 16.0),
-
-            // Filter Options Dropdown for food categories
-            DropdownButtonFormField<String>(
-              value: selectedFilterOption,
-              items: <String>['Select', 'Vegetarian', 'Vegan', 'Gluten-Free', 'Dairy-Free']
-                  .map((String option) {
-                return DropdownMenuItem<String>(
-                  value: option,
-                  child: Text(option),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedFilterOption = newValue!;
-                  filterSearchResults();
-                });
+              onChanged: (query) {
+                searchController.searchQuery.value = query;
+                searchController.searchFoodItems();
               },
-              decoration: InputDecoration(
-                labelText: 'Filter Options',
-                border: OutlineInputBorder(),
-              ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16),
 
-            // Search Results Section
-            Text('Search Results', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8.0),
+            // Location filter
+            TextField(
+              decoration: const InputDecoration(
+                labelText: 'Location',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.location_on),
+              ),
+              onChanged: (location) {
+                searchController.locationFilter.value = location;
+                searchController.searchFoodItems();
+              },
+            ),
+            const SizedBox(height: 16),
 
-            // Search Result ListView
-            Expanded(
-              child: filteredResults.isNotEmpty
-                  ? ListView.builder(
-                itemCount: filteredResults.length,
-                itemBuilder: (context, index) {
-                  final result = filteredResults[index];
-                  return ListTile(
-                    title: Text(result['name']),
-                    subtitle: Text(result['expiry']),
+            // Quantity filter (range)
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Min Quantity (kg)',
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      searchController.minQuantityFilter.value =
+                          int.tryParse(value) ?? 0;
+                      searchController.searchFoodItems();
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Max Quantity (kg)',
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      searchController.maxQuantityFilter.value =
+                          int.tryParse(value) ?? 100;
+                      searchController.searchFoodItems();
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Availability filter
+            Row(
+              children: [
+                const Text('Available'),
+                Obx(() {
+                  return Switch(
+                    value: searchController.isAvailableFilter.value,
+                    onChanged: (value) {
+                      searchController.isAvailableFilter.value = value;
+                      searchController.searchFoodItems();
+                    },
                   );
-                },
-              )
-                  : Center(child: Text('No results found.')),
+                }),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Display search results
+            Expanded(
+              child: Obx(() {
+                if (searchController.foodItems.isEmpty) {
+                  return const Center(child: Text('No food items found.'));
+                }
+
+                return ListView.builder(
+                  itemCount: searchController.foodItems.length,
+                  itemBuilder: (context, index) {
+                    var foodItem = searchController.foodItems[index].data()
+                        as Map<String, dynamic>;
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
+                      leading: foodItem['image_url'] != null
+                          ? Image.network(foodItem['image_url'],
+                              width: 50, height: 50, fit: BoxFit.cover)
+                          : const Icon(Icons.fastfood, size: 50),
+                      title: Text(foodItem['description'] ?? 'No description'),
+                      subtitle: Text(
+                          'Location: ${foodItem['pickup_location'] ?? 'N/A'}\nQuantity: ${foodItem['quantity']} kg'),
+                      trailing: foodItem['status'] == 'available'
+                          ? const Icon(Icons.check_circle, color: Colors.green)
+                          : const Icon(Icons.cancel, color: Colors.red),
+                    );
+                  },
+                );
+              }),
             ),
           ],
         ),
-      ),
-
-      // Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.add_box), label: 'Donate'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-        ],
-        currentIndex: 2, // Since this is the search screen, set the current index to 2.
-        selectedItemColor: Colors.green,
-        onTap: (index) {
-          // Handle bottom navigation tap events
-          if (index == 0) {
-            // Navigate to Home screen
-          } else if (index == 1) {
-            // Navigate to Donate screen
-          } else if (index == 2) {
-            // Already on Search screen
-          }
-        },
       ),
     );
   }

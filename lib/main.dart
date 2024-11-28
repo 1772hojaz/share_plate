@@ -2,6 +2,7 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plate/UI/feedback_page.dart';
+import 'package:share_plate/services/firebase_service.dart';
 import 'UI/food_listing.dart';
 import 'UI/splash_screen.dart';
 import 'UI/signin_page.dart';
@@ -11,6 +12,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'UI/signup.dart';
 import 'UI/chat_home.dart';
+import 'UI/search_screen.dart';
+
+import 'UI/donor_home_page.dart';
 
 const String kWebRecaptchaSiteKey = '6LeiEIsqAAAAAImicYKqok7r0xLeBfpNFE8BRMjw';
 void main() async {
@@ -23,6 +27,7 @@ void main() async {
     appleProvider: AppleProvider.debug,
     webProvider: ReCaptchaV3Provider(kWebRecaptchaSiteKey),
   );
+  Get.lazyPut(() => FirebaseService());
 
   runApp(const MyApp());
 }
@@ -43,6 +48,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/forgotpassword', page: () => ForgotPasswordScreen()),
         GetPage(name: '/feedback', page: () => const FeedbackPage()),
         GetPage(name: '/terms', page: () => TermsPage()),
+        GetPage(name: '/donate', page: () => DonorHomePage()),
+        GetPage(name: '/search', page: () => SearchScreen()),
+        GetPage(name: '/chat', page: () => HomeScreen()),
       ],
       debugShowCheckedModeBanner: false,
     );

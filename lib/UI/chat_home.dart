@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:share_plate/UI/chat.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,6 +14,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Color _accentColor = const Color(0xFF272727);
+
+  // Current selected index for the bottom navigation bar
+  int _selectedIndex = 0;
+
+  // Method to handle item tap on bottom navigation
+  void _onNavItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index; // Update the selected index
+    });
+
+    // Handle the navigation based on the index
+    if (index == 0) {
+      Get.toNamed('/home'); // Navigate to Home
+    } else if (index == 1) {
+      Get.toNamed('/donate'); // Navigate to Donate page
+    } else if (index == 2) {
+      Get.toNamed('/search'); // Navigate to Search page
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,29 +96,54 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Icon(Icons.home, color: Colors.black),
-                Text('Home', style: TextStyle(color: Colors.black)),
-              ],
+            _buildNavItem(
+              icon: Icons.home,
+              label: 'Home',
+              index: 0,
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Icon(Icons.volunteer_activism, color: Colors.black),
-                Text('Donate', style: TextStyle(color: Colors.black)),
-              ],
+            _buildNavItem(
+              icon: Icons.volunteer_activism,
+              label: 'Donate',
+              index: 1,
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Icon(Icons.search, color: Colors.black),
-                Text('Search', style: TextStyle(color: Colors.black)),
-              ],
+            _buildNavItem(
+              icon: Icons.search,
+              label: 'Search',
+              index: 2,
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Builds the navigation item with an icon and label
+  Widget _buildNavItem({
+    required IconData icon,
+    required String label,
+    required int index,
+  }) {
+    return GestureDetector(
+      onTap: () =>
+          _onNavItemTapped(index), // Navigate to the corresponding page
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: _selectedIndex == index
+                ? Colors.black
+                : Colors.black, // Highlight selected item
+          ),
+          Text(
+            label,
+            style: TextStyle(
+              color: _selectedIndex == index
+                  ? Colors.black
+                  : Colors.black, // Highlight selected text
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -136,14 +181,11 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatScreen(
-                key: Key('chatScreen'),
-                receiverUserEmail: data['email'],
-                receiverUserID: data['uid'],
-              ),
+          Get.to(
+            () => ChatScreen(
+              key: Key('chatScreen'),
+              receiverUserEmail: data['email'],
+              receiverUserID: data['uid'],
             ),
           );
         },

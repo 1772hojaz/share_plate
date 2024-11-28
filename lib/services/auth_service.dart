@@ -37,8 +37,7 @@ class AuthService {
       });
 
       // Navigate to the home screen after the data is saved
-      Get.offNamed(
-          '/home'); // This will navigate to the home screen or root screen
+      Get.offNamed('/home');
     } on FirebaseAuthException catch (e) {
       String message = '';
 

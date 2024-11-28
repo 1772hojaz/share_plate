@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:share_plate/UI/reserve.dart';
 
 // Model class for food items
 class FoodItem {
+  String donorId;
+  String donorEmail;
   String image; // Image URL
   String description;
   bool isReserved;
   String id; // Firestore document ID
 
   FoodItem({
+    required this.donorId,
+    required this.donorEmail,
     required this.image,
     required this.description,
     this.isReserved = false,
@@ -19,6 +24,8 @@ class FoodItem {
   // Convert a Firestore document to FoodItem object
   factory FoodItem.fromFirestore(Map<String, dynamic> data, String id) {
     return FoodItem(
+      donorId: data['donor_Id'] ?? '',
+      donorEmail: data['donor_Email'] ?? '',
       image: data['image_url'] ?? '',
       description: data['description'] ?? '',
       isReserved: data['isReserved'] ?? false,
@@ -52,25 +59,6 @@ class FoodListingPageController extends GetxController {
       Get.snackbar("Error", "Failed to fetch food items: $e");
     }
   }
-
-  // Reserve an item (mark as reserved in Firestore)
-  void reserveItem(int index) async {
-    var foodItem = foodList[index];
-    foodItem.isReserved = true;
-    foodList.refresh();
-
-    try {
-      await FirebaseFirestore.instance
-          .collection('food_items')
-          .doc(foodItem.id)
-          .update({
-        'isReserved': true,
-      });
-      Get.snackbar("Success", "Item Reserved!");
-    } catch (e) {
-      Get.snackbar("Error", "Failed to reserve item: $e");
-    }
-  }
 }
 
 // The main FoodListingPage
@@ -92,8 +80,16 @@ class FoodListingPage extends StatelessWidget {
         actions: [
           GestureDetector(
             onTap: () {
-              // Navigate to user profile page (for demo purposes, it's just a placeholder)
-              Get.to(UserProfilePage());
+              Get.toNamed('/chat'); // Navigate to chat page
+            },
+            child: const Icon(
+              Icons.message, // Message icon
+              color: Color.fromARGB(255, 14, 7, 7), // Icon color
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Get.to(() => const UserProfilePage());
             },
             child: Container(
               margin: const EdgeInsets.only(right: 16, top: 16),
@@ -108,6 +104,7 @@ class FoodListingPage extends StatelessWidget {
               ),
             ),
           ),
+          // Chat Icon
         ],
       ),
       body: Column(
@@ -134,13 +131,14 @@ class FoodListingPage extends StatelessWidget {
                   var foodItem = controller.foodList[index];
                   return GestureDetector(
                     onTap: () {
-                      // Mark the item as reserved when tapped
-                      if (!foodItem.isReserved) {
-                        controller.reserveItem(index);
-                      } else {
-                        Get.snackbar("Already Reserved",
-                            "This item has already been reserved.");
-                      }
+                      Get.to(() => Reserve(
+                            imagePath: foodItem.image,
+                            description: foodItem.description,
+                            foodId: foodItem.id,
+                            foodItem: foodItem,
+                            donorId: foodItem.donorId,
+                            donorEmail: foodItem.donorEmail,
+                          ));
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -153,19 +151,17 @@ class FoodListingPage extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               image: DecorationImage(
-                                image: NetworkImage(foodItem
-                                    .image), // Changed to NetworkImage for URL
+                                image: NetworkImage(foodItem.image),
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
-                          // Food description overlay (instead of "Available")
+                          // Food description overlay
                           Positioned(
                             top: 10,
                             left: 10,
                             child: Text(
-                              foodItem
-                                  .description, // Show food description instead
+                              foodItem.description,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
@@ -183,7 +179,7 @@ class FoodListingPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 4),
                                 color: Colors.green,
-                                child: Text(
+                                child: const Text(
                                   'Reserved',
                                   style: TextStyle(color: Colors.white),
                                 ),
@@ -198,37 +194,56 @@ class FoodListingPage extends StatelessWidget {
             }),
           ),
           // Bottom navigation bar
+          // Bottom navigation bar
           Container(
             height: 95,
             width: 403,
             color: const Color(0xFF00B140),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.home, color: Colors.black),
-                    Text('Home', style: TextStyle(color: Colors.black)),
-                  ],
+              children: [
+                // Home Button
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed('/home'); // Navigate to Home page
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(Icons.home, color: Colors.black),
+                      Text('Home', style: TextStyle(color: Colors.black)),
+                    ],
+                  ),
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.volunteer_activism, color: Colors.black),
-                    Text('Donate', style: TextStyle(color: Colors.black)),
-                  ],
+                // Donate Button
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed('/donate'); // Navigate to Donate page
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(Icons.volunteer_activism, color: Colors.black),
+                      Text('Donate', style: TextStyle(color: Colors.black)),
+                    ],
+                  ),
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.search, color: Colors.black),
-                    Text('Search', style: TextStyle(color: Colors.black)),
-                  ],
+                // Search Button
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed('/search'); // Navigate to Search page
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(Icons.search, color: Colors.black),
+                      Text('Search', style: TextStyle(color: Colors.black)),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );
