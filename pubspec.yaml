@@ -36,6 +36,7 @@ dependencies:
 
   cloudinary_api: ^1.0.0
   cloudinary_sdk: ^5.0.0+1
+  mockito: ^5.4.4
 
 
 dev_dependencies:
